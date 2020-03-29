@@ -22,11 +22,12 @@ namespace FlightSimulatorApp.Views
         {
             InitializeComponent();
         }
-        private void CenterKnob_Completed(object sender, EventArgs e) { }
+        //private void CenterKnob_Completed(object sender, EventArgs e) { }
+        private void centerKnob_Completed(object sender, EventArgs e) { }
         private Point FirstPoint = new Point();
         private void Knob_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) { FirstPoint = e.GetPosition(this); }
+            if (e.ChangedButton == MouseButton.Left) {FirstPoint = e.GetPosition(this); }
         }
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
