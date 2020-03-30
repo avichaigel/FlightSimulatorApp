@@ -42,8 +42,13 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string command)
         {
-            // TODO: complete this section
-            //throw new NotImplementedException();
+            string official_command = command + "\n";
+            byte[] read = Encoding.ASCII.GetBytes(official_command);
+            client.GetStream().Write(read, 0, read.Length);
+            byte[] buffer = new byte[64];
+            client.GetStream().Read(buffer, 0, 64);
+            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            Console.WriteLine(data);
         }
     }
 }
