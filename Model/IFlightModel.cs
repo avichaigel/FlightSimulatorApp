@@ -12,7 +12,7 @@ namespace FlightSimulatorApp.Model
         void connect(string ip, int port);
         void disconnect();
         void start();
-        
-        
+
+        void move(double speed, int angle);
     }
 }

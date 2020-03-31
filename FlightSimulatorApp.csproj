@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\IFlightModel.cs" />
     <Compile Include="Model\ITelnetClient.cs" />
+    <Compile Include="Model\MyFlightModel.cs" />
     <Compile Include="Model\MyTelnetClient .cs" />
     <Compile Include="ViewModel\RegularNotify.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
