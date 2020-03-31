@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace FlightSimulatorApp.ViewModel
 {
-    class ViewModel : INotifyPropertyChanged
+    class FlightViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
     }
