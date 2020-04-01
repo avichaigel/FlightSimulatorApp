@@ -24,5 +24,20 @@ namespace FlightSimulatorApp
         {
             InitializeComponent();
         }
+
+        private void AileronSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void ThrottleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void Joystick_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

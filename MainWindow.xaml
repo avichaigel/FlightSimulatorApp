@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:FlightSimulatorApp" xmlns:Views="clr-namespace:FlightSimulatorApp.Views"
         mc:Ignorable="d"
         Title="MainWindow" Width="800" Height="600" ResizeMode="NoResize">
@@ -18,7 +19,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!-- Joystick-->
-            <Views:Joystick Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"  Grid.RowSpan="2" Loaded="Joystick_Loaded" Margin="31,-19,29,-22" RenderTransformOrigin="0.5,0.5" Height="341">
+            <Views:Joystick Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"  Grid.RowSpan="2" Loaded="Joystick_Loaded"  Margin="31,-19,29,-22" RenderTransformOrigin="0.5,0.5" Height="341">
                 <Views:Joystick.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
