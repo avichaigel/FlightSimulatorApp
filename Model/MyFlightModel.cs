@@ -124,10 +124,11 @@ namespace FlightSimulatorApp.Model
 
         public void move(double speed, int angle)
         {
-            //set throttle, aileron, elevator and rudder rceieved from VM
+            //TODO: maybe set throttle, aileron, elevator and rudder rceieved from VM
+            
         }
 
-        //get 
+        //get values for properties from simulator
         public void start()
         {
             new Thread(delegate ()
