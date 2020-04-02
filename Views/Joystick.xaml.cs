@@ -34,13 +34,20 @@ namespace FlightSimulatorApp.Views
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-
+                double deltaX = e.GetPosition(this).X - FirstPoint.X;
+                double deltaY = e.GetPosition(this).Y - FirstPoint.Y;
+                if (Math.Sqrt(deltaX* deltaX + deltaY*deltaY) < Base.Width / 2)
+                {
+                    knobPosition.X = deltaX;
+                    knobPosition.Y = deltaY;
+                }
             }
         }
 
         private void Knob_MouseUp(object sender, MouseButtonEventArgs e)
         {
-
+            knobPosition.X = 0;
+            knobPosition.Y = 0;
         }
     }
 }
