@@ -14,6 +14,10 @@ namespace FlightSimulatorApp.Model
         public event PropertyChangedEventHandler PropertyChanged;
         volatile Boolean stop;
 
+        private double throttle;
+        private double aileron;
+        private double elevator;
+        private double rudder;
         private double latitude;
         private double longitude;
         private double air_Speed;
@@ -25,15 +29,43 @@ namespace FlightSimulatorApp.Model
         private double ground_Speed;
         private double vertical_Speed;
 
-        public void NotifyPropertyChanged(string propName)
+        //Properties
+        public double Throttle
         {
-            if (this.PropertyChanged != null)
+            get => throttle;
+            set
             {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+                throttle = value;
+                telnetClient.Write("set /controls/engines/current-engine/throttle " + value + "\n");
             }
         }
-
-        //Properties
+        public double Aileron
+        {
+            get => aileron;
+            set
+            {
+                aileron = value;
+                telnetClient.Write("set /controls/flight/aileron " + value + "\n");
+            }
+        }
+        public double Elevator
+        {
+            get => elevator;
+            set
+            {
+                elevator = value;
+                telnetClient.Write("set /controls/flight/elevator " + value + "\n");
+            }
+        }
+        public double Rudder
+        {
+            get => rudder;
+            set
+            {
+                rudder = value;
+                telnetClient.Write("set /controls/flight/rudder " + value + "\n");
+            }
+        }
         public double Latitude { 
             get => latitude;
             set
@@ -122,10 +154,10 @@ namespace FlightSimulatorApp.Model
             telnetClient.Disconnect();
         }
 
-        public void move(double speed, int angle)
+
+        public void NotifyPropertyChanged(string propName)
         {
-            //TODO: maybe set throttle, aileron, elevator and rudder rceieved from VM
-            
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
         //get values for properties from simulator
@@ -135,25 +167,25 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    telnetClient.Write("get latitude");
+                    telnetClient.Write("get /position/latitude-deg");
                     Latitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get longtitude");
+                    telnetClient.Write("get /position/longitude-deg");
                     Longitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get air_speed");
+                    telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
                     Air_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get altitude");
+                    telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
                     Altitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get roll");
+                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
                     Roll = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get pitch");
+                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
                     Pitch = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get altimeter");
+                    telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
                     Altimeter = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get heading");
+                    telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
                     Heading = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get ground_speed");
+                    telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
                     Ground_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get vertical_speed");
+                    telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
                     Vertical_Speed = Double.Parse(telnetClient.Read());
 
                     Thread.Sleep(250);
