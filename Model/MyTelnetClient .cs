@@ -29,7 +29,7 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public string Read(string command)
+        public string Read()
         {
             NetworkStream myNetworkStream = client.GetStream();
             if (myNetworkStream.CanRead)
