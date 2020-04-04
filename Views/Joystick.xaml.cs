@@ -13,41 +13,48 @@ using System.Windows.Shapes;
 
 namespace FlightSimulatorApp.Views
 {
-    /// <summary>
-    /// Interaction logic for Joystick.xaml
-    /// </summary>
     public partial class Joystick : UserControl
     {
+        // We are using it as a anchor after each movemoent
+        private Point centerAnchor;
+        // checks (multithreadingly) if our mouse has been touched 
+        private volatile bool isClicked;
+        private double destX, destY;
+
         public Joystick()
         {
             InitializeComponent();
+            centerAnchor = new Point(Base.Width / 2, Base.Height / 2);
+
         }
-        //private void CenterKnob_Completed(object sender, EventArgs e) { }
         private void centerKnob_Completed(object sender, EventArgs e) { }
         private Point FirstPoint = new Point();
         private void Knob_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left) {FirstPoint = e.GetPosition(this); }
+            if (e.ChangedButton == MouseButton.Left) { FirstPoint = e.GetPosition(this); }
         }
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                double deltaX = e.GetPosition(this).X - FirstPoint.X;
-                double deltaY = e.GetPosition(this).Y - FirstPoint.Y;
-                if (Math.Sqrt(deltaX* deltaX + deltaY*deltaY) < Base.Width / 2)
-                {
-                    knobPosition.X = deltaX;
-                    knobPosition.Y = deltaY;
-                }
+                isClicked = true;
             }
+        }
+
+        private void BaseMouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void BaseMouseMove(object sender, MouseEventArgs e)
+        {
+
         }
 
         private void Knob_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            knobPosition.X = 0;
-            knobPosition.Y = 0;
+            
         }
     }
 }
