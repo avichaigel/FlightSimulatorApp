@@ -3,13 +3,71 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FlightSimulatorApp"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:FlightSimulatorApp" xmlns:Views="clr-namespace:FlightSimulatorApp.Views"
         mc:Ignorable="d"
         Title="MainWindow" Width="800" Height="600" ResizeMode="NoResize">
     <Canvas Background="LightBlue">
+        <!--Map-->
+        <Grid Width="400" Height="540">
+            <m:Map x:Name="myMap" CredentialsProvider="FuPsAug2Z6oh963EoalD~vA0zIDr5Tcag1c0ybkBXng~ApWIuNfipAkQymYUrQu0EX0dFJP_cMTKEbHiw60JX7I2_UjZ4rO5q1qYM9JP8dT3" Mode="AerialWithLabels" Center="32.005232, 34.886709" ZoomLevel="12" Margin="0,30,0,-30"/>
+        </Grid>
+        <!--Controls-->
         <Grid Width="400" Height="300" Margin="0,0,0,0" Background="LightBlue" Canvas.Left="400" Canvas.Top="259">
-
-
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!-- Joystick-->
+            <Views:Joystick Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2"  Grid.RowSpan="2" Loaded="Joystick_Loaded"  Margin="31,-19,29,-22" RenderTransformOrigin="0.5,0.5" Height="341">
+                <Views:Joystick.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Views:Joystick.RenderTransform>
+            </Views:Joystick>
+            <!-- Aileron Slider-->
+            <Slider x:Name="AileronSlider" Value="{Binding VM_Aileron, Mode = OneWayToSource }" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,220,0,0" Width="170" Height="20" Background="#FF4C71B2"  Maximum="1" Minimum="-1" ValueChanged="AileronSlider_ValueChanged"/>
+            <!-- Throttle Slider-->
+            <Slider x:Name="ThrottleSlider" Value="{Binding VM_Throttle, Mode = OneWayToSource}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="170" Background="#FF4C71B2" RenderTransformOrigin="0.5,0.5"  Margin="-220,0,0,0"  Maximum="1" Minimum="0" ValueChanged="ThrottleSlider_ValueChanged" >
+                <Slider.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="270"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Slider.RenderTransform>
+            </Slider>
+            <!-- Throttle Text-->
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="33" Margin="-11,133,53,134"  RenderTransformOrigin="0.5,0.5"  Width="158"   TextWrapping="Wrap" Text="&lt;--Throttle--&gt;"  FontSize="23" FontWeight="Bold">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+            <!-- Trottle value-->
+            <TextBlock Name="ThrottleValue" Grid.Row="0" Grid.Column="0"  Grid.RowSpan="2" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="19,136,0,0" TextWrapping="Wrap" Text="0.0" Height="26" Width="37" Foreground="Black" FontSize="16" FontWeight="Bold"/>
+            <!-- Aileron Text-->
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="33" Margin="126,117,125,0" TextWrapping="Wrap" Text="&lt;--Aileron--&gt;" Width="149" FontSize="23" FontWeight="Bold">
+            </TextBlock>
+            <!-- Aileron value-->
+            <TextBlock Name="AileronValue" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="88,122,72,2" TextWrapping="Wrap" Text="0.0" Height="26" Width="40" Foreground="Black" FontSize="16" FontWeight="Bold">
+                <TextBlock.BindingGroup>
+                    <BindingGroup/>
+                </TextBlock.BindingGroup>
+            </TextBlock>
         </Grid>
     </Canvas>
 </Window>
