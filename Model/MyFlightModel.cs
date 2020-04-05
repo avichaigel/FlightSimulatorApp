@@ -11,15 +11,15 @@ namespace FlightSimulatorApp.Model
     class MyFlightModel : IFlightModel
     {
         ITelnetClient telnetClient;
-        public event PropertyChangedEventHandler PropertyChanged;
         volatile Boolean stop;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private double throttle;
         private double aileron;
         private double elevator;
         private double rudder;
         private double latitude;
-        private double longitude;
+        private double longtitude;
         private double air_Speed;
         private double altitude;
         private double roll;
@@ -29,6 +29,11 @@ namespace FlightSimulatorApp.Model
         private double ground_Speed;
         private double vertical_Speed;
 
+        //constuctor
+        public MyFlightModel(ITelnetClient telnetClient)
+        {
+            this.telnetClient = telnetClient;
+        }
         //Properties
         public double Throttle
         {
@@ -74,10 +79,10 @@ namespace FlightSimulatorApp.Model
                 NotifyPropertyChanged("Latitude");
             }
         }
-        public double Longitude {
-            get => longitude; 
+        public double Longtitude {
+            get => longtitude; 
             set {
-                longitude = value;
+                longtitude = value;
                 NotifyPropertyChanged("Longtitude");
             }
         }
@@ -138,12 +143,6 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        //constuctor
-        public MyFlightModel(ITelnetClient telnetClient)
-        {
-            this.telnetClient = telnetClient;
-        }
-
         public void connect(string ip, int port)
         {
             telnetClient.Connect(ip, port);
@@ -154,14 +153,14 @@ namespace FlightSimulatorApp.Model
             telnetClient.Disconnect();
         }
 
-
-        public void NotifyPropertyChanged(string propName)
+        private void NotifyPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        //get values for properties from simulator
-        public void start()
+
+    //get values for properties from simulator
+    public void start()
         {
             new Thread(delegate ()
             {
@@ -170,7 +169,7 @@ namespace FlightSimulatorApp.Model
                     telnetClient.Write("get /position/latitude-deg");
                     Latitude = Double.Parse(telnetClient.Read());
                     telnetClient.Write("get /position/longitude-deg");
-                    Longitude = Double.Parse(telnetClient.Read());
+                    Longtitude = Double.Parse(telnetClient.Read());
                     telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
                     Air_Speed = Double.Parse(telnetClient.Read());
                     telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
@@ -191,6 +190,11 @@ namespace FlightSimulatorApp.Model
                     Thread.Sleep(250);
                 }               
             }).Start();
+        }
+
+        void IFlightModel.NotifyPropertyChanged(string propName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
