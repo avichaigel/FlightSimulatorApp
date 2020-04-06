@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,50 +8,22 @@ using FlightSimulatorApp.Model;
 
 namespace FlightSimulatorApp.ViewModel
 {
-    class FlightViewModel : INotifyPropertyChanged
+    class DashboardViewModel : INotifyPropertyChanged
     {
         private IFlightModel model;
-        public FlightViewModel(IFlightModel model)
+        public DashboardViewModel(IFlightModel model)
         {
             this.model = model;
             model.PropertyChanged +=
                 delegate (object sender, PropertyChangedEventArgs e)
-            {
-                NotifyPropertyChanged("VM_" + e.PropertyName);
-            };
+                {
+                    NotifyPropertyChanged("VM_" + e.PropertyName);
+                };
         }
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
-
-        //Properties that change those in Model according to View
-        public double VM_throttle
-        {
-            set => model.Throttle = value;
-        }
-        public double VM_aileron
-        {
-            set => model.Aileron = value;
-        }
-        public double VM_elevator
-        {
-            set => model.Elevator = value;
-        }
-        public double VM_rudder
-        {
-            set => model.Rudder = value;
-        }
-
-        //Properties that change those in View according to Model
-        public double VM_latitude
-        {
-            get => model.Latitude;
-        }
-        public double VM_longtitude
-        {
-            get => model.Longtitude;
         }
         public double VM_air_speed
         {
@@ -87,4 +59,3 @@ namespace FlightSimulatorApp.ViewModel
         }
     }
 }
-*/
