@@ -80,7 +80,6 @@ namespace FlightSimulatorApp.Views
             destX = centerAnchor.X;
             destY = centerAnchor.Y;
             Movement();
-            //Normalize();
         }
 
         private void Normalize()
