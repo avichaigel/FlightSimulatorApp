@@ -16,6 +16,8 @@ namespace FlightSimulatorApp.Model
         private bool IsConnected = false;
         public void Connect(string ip, int port)
         {
+            //ip = "1.0.0.127";
+            //port = 5402;
             client = new TcpClient();
             client.Connect(ip, port);
         }
