@@ -24,14 +24,14 @@ namespace FlightSimulatorApp
 
     public partial class App : Application
     {
-        public FlightViewModel flightSimulatorViewModel;
-        public MyFlightModel model;
+        private MainViewModel MainVM;
+        private MyFlightModel model;
 
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
             model = new MyFlightModel(new MyTelnetClient());
 
-            flightSimulatorViewModel = new FlightViewModel(model);
+            MainVM = new MainViewModel(model);
             model.connect("127.0.0.1", 5402);
 
             Window mainWindow = new MainWindow();

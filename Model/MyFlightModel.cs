@@ -188,25 +188,25 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    this.Write("get /position/latitude-deg\n");
+                    this.Write("get /position/latitude-deg");
                     Latitude = Double.Parse(this.Read());
-                    this.Write("get /position/longitude-deg\n");
+                    this.Write("get /position/longitude-deg");
                     Longtitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
                     Air_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-altitude-ft\n");
+                    this.Write("get /instrumentation/gps/indicated-altitude-ft");
                     Altitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
                     Roll = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
                     Pitch = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
                     Altimeter = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
                     Heading = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
                     Ground_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-vertical-speed\n");
+                    this.Write("get /instrumentation/gps/indicated-vertical-speed");
                     Vertical_Speed = Double.Parse(this.Read());
 
                     Thread.Sleep(250);

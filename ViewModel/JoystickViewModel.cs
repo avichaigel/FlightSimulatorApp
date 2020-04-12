@@ -34,5 +34,13 @@ namespace FlightSimulatorApp.ViewModel
         {
             set => model.Rudder = value;
         }
+        public double VM_throttle
+        {
+            set => model.Throttle = value;
+        }
+        public double VM_aileron
+        {
+            set => model.Aileron = value;
+        }
     }
 }
