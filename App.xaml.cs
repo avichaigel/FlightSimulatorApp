@@ -24,6 +24,7 @@ namespace FlightSimulatorApp
 
     public partial class App : Application
     {
+        internal object flightSimulatorViewModel;
         private MainViewModel MainVM;
         private MyFlightModel model;
 
