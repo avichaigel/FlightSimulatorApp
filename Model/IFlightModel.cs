@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlightSimulatorApp.Model
 {
-    interface IFlightModel
+    public interface IFlightModel
     {
         event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged(string propName);

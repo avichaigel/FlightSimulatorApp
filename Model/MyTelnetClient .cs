@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace FlightSimulatorApp.Model
 {
-    class MyTelnetClient : ITelnetClient
+    public class MyTelnetClient : ITelnetClient
     {
         private TcpClient client;
         private bool IsConnected = false;
@@ -57,8 +57,8 @@ namespace FlightSimulatorApp.Model
             string official_command = command + "\n";
             byte[] read = Encoding.ASCII.GetBytes(official_command);
             client.GetStream().Write(read, 0, read.Length);
-            byte[] buffer = new byte[64];
-            client.GetStream().Read(buffer, 0, 64);
+            byte[] buffer = new byte[1024];
+            client.GetStream().Read(buffer, 0, 1024);
             string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
             Console.WriteLine(data);
         }

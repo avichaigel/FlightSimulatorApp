@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlightSimulatorApp.Model
 {
-    class MyFlightModel : IFlightModel
+    public class MyFlightModel : IFlightModel
     {
         ITelnetClient telnetClient;
         volatile Boolean stop;
