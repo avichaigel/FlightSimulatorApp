@@ -1,4 +1,5 @@
 ﻿using FlightSimulatorApp.Model;
+using FlightSimulatorApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
