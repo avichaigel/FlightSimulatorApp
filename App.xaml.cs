@@ -1,4 +1,5 @@
 ﻿using FlightSimulatorApp.Model;
+using FlightSimulatorApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace FlightSimulatorApp
     public partial class App : Application
     {
         public MainViewModel MainVM { get; internal set; }
-
+        
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             IFlightModel flightModel = new MyFlightModel(new MyTelnetClient());
