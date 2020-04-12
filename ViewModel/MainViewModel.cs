@@ -16,16 +16,14 @@ namespace FlightSimulatorApp.ViewModel
 
         public DashboardViewModel DashBoardVM { get; set; }
         public MapViewModel MapVM { get; set; }
-        public JoystickViewModel JoystickVM { get; set; }
-        public SlidersViewModel SlidersVM { get; set; }
+        public ControllersViewModel ControllersVM { get; set; }
 
         public MainViewModel(IFlightModel flightModel)
         {
             this.flightModel = flightModel;
             DashBoardVM = new DashboardViewModel(flightModel);
             MapVM = new MapViewModel(flightModel);
-            JoystickVM = new JoystickViewModel(flightModel);
-            SlidersVM = new SlidersViewModel(flightModel);
+            ControllersVM = new ControllersViewModel(flightModel);
         }
     }
 }

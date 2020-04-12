@@ -213,5 +213,10 @@ namespace FlightSimulatorApp.Model
                 }               
             }).Start();
         }
+
+        void IFlightModel.NotifyPropertyChanged(string propName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
