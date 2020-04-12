@@ -23,6 +23,7 @@ namespace FlightSimulatorApp
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void AileronSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -64,6 +64,7 @@
     <Compile Include="Model\MyTelnetClient .cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\JoystickViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\RegularNotify.cs" />
     <Compile Include="ViewModel\FlightViewModel.cs" />
