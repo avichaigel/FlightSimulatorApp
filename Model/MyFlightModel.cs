@@ -41,7 +41,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 throttle = value;
-                telnetClient.Write("set /controls/engines/current-engine/throttle " + value + "\n");
+                this.Write("set /controls/engines/current-engine/throttle " + value + "\n");
             }
         }
         public double Aileron
@@ -50,7 +50,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
-                telnetClient.Write("set /controls/flight/aileron " + value + "\n");
+                this.Write("set /controls/flight/aileron " + value + "\n");
             }
         }
         public double Elevator
@@ -59,7 +59,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
-                telnetClient.Write("set /controls/flight/elevator " + value + "\n");
+                this.Write("set /controls/flight/elevator " + value + "\n");
             }
         }
         public double Rudder
@@ -68,15 +68,15 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
-                telnetClient.Write("set /controls/flight/rudder " + value + "\n");
+                this.Write("set /controls/flight/rudder " + value + "\n");
             }
         }
-        public double Latitude { 
+        public double Latitude {
             get => latitude;
             set
             {
                 latitude = value;
-                NotifyPropertyChanged("Latitude");
+                NotifyPropertyChanged("Longtitude");
             }
         }
         public double Longtitude {
@@ -143,6 +143,7 @@ namespace FlightSimulatorApp.Model
             }
         }
 
+        //methods
         public void connect(string ip, int port)
         {
             telnetClient.Connect(ip, port);
@@ -158,43 +159,59 @@ namespace FlightSimulatorApp.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
+        public void Write(string message)
+        {
+            var task = Task.Run(() => telnetClient.Write(message));
+            if (!task.Wait(TimeSpan.FromSeconds(10)))
+            {
+            throw new Exception("Server not responding for 10 seconds");
+            }
+        }
 
-    //get values for properties from simulator
-    public void start()
+        public string Read()
+        {
+            var task = Task.Run(() => telnetClient.Read());
+            if (task.Wait(TimeSpan.FromSeconds(10)))
+            {
+                return task.Result;
+            }
+            else
+            {
+                throw new Exception("Server not responding for 10 seconds");
+            }
+        }
+
+        //get values for properties from simulator
+        public void start()
         {
             new Thread(delegate ()
             {
                 while(!stop)
                 {
-                    telnetClient.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    Air_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(telnetClient.Read());
+                    this.Write("get /position/latitude-deg");
+                    Latitude = Double.Parse(this.Read());
+                    this.Write("get /position/longitude-deg");
+                    Longtitude = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                    Air_Speed = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/gps/indicated-altitude-ft");
+                    Altitude = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                    Roll = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                    Pitch = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                    Altimeter = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                    Heading = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                    Ground_Speed = Double.Parse(this.Read());
+                    this.Write("get /instrumentation/gps/indicated-vertical-speed");
+                    Vertical_Speed = Double.Parse(this.Read());
 
                     Thread.Sleep(250);
                 }               
             }).Start();
-        }
-
-        void IFlightModel.NotifyPropertyChanged(string propName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
+using System.Diagnostics;
 
 namespace FlightSimulatorApp.Model
 {
@@ -16,6 +16,8 @@ namespace FlightSimulatorApp.Model
         private bool IsConnected = false;
         public void Connect(string ip, int port)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             client = new TcpClient();
             client.Connect(ip, port);
         }
@@ -42,8 +44,6 @@ namespace FlightSimulatorApp.Model
                     readBytesNum = myNetworkStream.Read(bufferReader, 0, bufferReader.Length);
                     wholeMessage.AppendFormat("{0}", Encoding.ASCII.GetString(bufferReader, 0, readBytesNum));
                 }
-                // print the message to the console
-                Console.WriteLine("Your Message: " + wholeMessage);
                 return wholeMessage.ToString();
             }
             return null;
@@ -55,10 +55,9 @@ namespace FlightSimulatorApp.Model
             string official_command = command + "\n";
             byte[] read = Encoding.ASCII.GetBytes(official_command);
             client.GetStream().Write(read, 0, read.Length);
-            byte[] buffer = new byte[64];
+ /*           byte[] buffer = new byte[64];
             client.GetStream().Read(buffer, 0, 64);
-            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            Console.WriteLine(data);
+            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);*/
         }
     }
 }
