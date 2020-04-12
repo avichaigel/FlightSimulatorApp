@@ -166,26 +166,26 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    telnetClient.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /position/latitude-deg");
+                    //Latitude = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /position/longitude-deg");
+                    //Longtitude = Double.Parse(telnetClient.Read());
                     telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
                     Air_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(telnetClient.Read());
-                    telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
+                    //Altitude = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                    //Roll = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                    //Pitch = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                    //Altimeter = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                    //Heading = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                    //Ground_Speed = Double.Parse(telnetClient.Read());
+                    //telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
+                    //Vertical_Speed = Double.Parse(telnetClient.Read());
 
                     Thread.Sleep(250);
                 }               

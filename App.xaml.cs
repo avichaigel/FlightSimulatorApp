@@ -33,7 +33,7 @@ namespace FlightSimulatorApp
 
             flightSimulatorViewModel = new FlightViewModel(model);
             model.connect("127.0.0.1", 5402);
-
+            model.start();
             Window mainWindow = new MainWindow();
             mainWindow.Show();
         }
