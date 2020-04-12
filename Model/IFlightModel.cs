@@ -10,7 +10,7 @@ namespace FlightSimulatorApp.Model
     public interface IFlightModel
     {
         event PropertyChangedEventHandler PropertyChanged;
-        //void NotifyPropertyChanged(string propName);
+        void NotifyPropertyChanged(string propName);
 
         double Throttle { get; set; }
         double Aileron { get; set; }

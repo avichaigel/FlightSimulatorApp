@@ -33,22 +33,28 @@ namespace FlightSimulatorApp.Model
 
         public string Read()
         {
-            NetworkStream myNetworkStream = client.GetStream();
-            if (myNetworkStream.CanRead)
-            {
-                byte[] bufferReader = new byte[1024];
-                StringBuilder wholeMessage = new StringBuilder();
-                int readBytesNum = 0;
-                while (myNetworkStream.DataAvailable)
-                {
-                    readBytesNum = myNetworkStream.Read(bufferReader, 0, bufferReader.Length);
-                    wholeMessage.AppendFormat("{0}", Encoding.ASCII.GetString(bufferReader, 0, readBytesNum));
-                }
-                // print the message to the console
-                Console.WriteLine("Your Message: " + wholeMessage);
-                return wholeMessage.ToString();
-            }
-            return null;
+            //NetworkStream myNetworkStream = client.GetStream();
+            //if (myNetworkStream.CanRead)
+            //{
+            //    byte[] bufferReader = new byte[1024];
+            //    StringBuilder wholeMessage = new StringBuilder();
+            //    int readBytesNum = 0;
+            //    while (myNetworkStream.DataAvailable)
+            //    {
+            //        readBytesNum = myNetworkStream.Read(bufferReader, 0, bufferReader.Length);
+            //        wholeMessage.AppendFormat("{0}", Encoding.ASCII.GetString(bufferReader, 0, readBytesNum));
+            //    }
+            //    // print the message to the console
+            //    Console.WriteLine("Your Message: " + wholeMessage);
+            //    return wholeMessage.ToString();
+            //}
+            //return null;
+            byte[] buffer = new byte[1024];
+            client.GetStream().Read(buffer, 0, 1024);
+            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            Console.WriteLine(data);
+            return data;
+
         }
 
 
@@ -57,10 +63,10 @@ namespace FlightSimulatorApp.Model
             string official_command = command + "\n";
             byte[] read = Encoding.ASCII.GetBytes(official_command);
             client.GetStream().Write(read, 0, read.Length);
-            byte[] buffer = new byte[1024];
-            client.GetStream().Read(buffer, 0, 1024);
-            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            Console.WriteLine(data);
+            //byte[] buffer = new byte[1024];
+            //client.GetStream().Read(buffer, 0, 1024);
+            //string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            //Console.WriteLine(data);
         }
     }
 }
