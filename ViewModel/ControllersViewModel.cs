@@ -8,10 +8,10 @@ using FlightSimulatorApp.Model;
 
 namespace FlightSimulatorApp.ViewModel
 {
-    class JoystickViewModel : INotifyPropertyChanged
+    class ControllersViewModel : INotifyPropertyChanged
     {
         private IFlightModel model;
-        public JoystickViewModel(IFlightModel model)
+        public ControllersViewModel(IFlightModel model)
         {
             this.model = model;
             model.PropertyChanged +=
