@@ -41,7 +41,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 throttle = value;
-                this.Write("set /controls/engines/current-engine/throttle " + value + "\n");
+                this.Write("set /controls/engines/current-engine/throttle " + value);
             }
         }
         public double Aileron
@@ -50,7 +50,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
-                this.Write("set /controls/flight/aileron " + value + "\n");
+                this.Write("set /controls/flight/aileron " + value);
             }
         }
         public double Elevator
@@ -59,7 +59,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
-                this.Write("set /controls/flight/elevator " + value + "\n");
+                this.Write("set /controls/flight/elevator " + value);
             }
         }
         public double Rudder
@@ -68,7 +68,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
-                this.Write("set /controls/flight/rudder " + value + "\n");
+                this.Write("set /controls/flight/rudder " + value);
             }
         }
         public double Latitude {
@@ -146,7 +146,11 @@ namespace FlightSimulatorApp.Model
         //methods
         public void connect(string ip, int port)
         {
-            telnetClient.Connect(ip, port);
+            var task = Task.Run(() => telnetClient.Connect(ip, port));
+            if (!task.Wait(TimeSpan.FromSeconds(10)))
+            {
+                throw new Exception("Server not connecting");
+            }
         }
 
         public void disconnect()
