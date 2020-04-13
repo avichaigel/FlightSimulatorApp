@@ -13,6 +13,7 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
+        private static Mutex mutex = new Mutex();
 
         private double throttle;
         private double aileron;
@@ -76,7 +77,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
-                NotifyPropertyChanged("Longtitude");
+                NotifyPropertyChanged("Latitude");
             }
         }
         public double Longtitude {
@@ -165,16 +166,18 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string message)
         {
-            var task = Task.Run(() => telnetClient.Write(message));
+            telnetClient.Write(message);
+/*            var task = Task.Run(() => telnetClient.Write(message));
             if (!task.Wait(TimeSpan.FromSeconds(10)))
             {
             throw new Exception("Server not responding for 10 seconds");
-            }
+            }*/
         }
 
         public string Read()
         {
-            var task = Task.Run(() => telnetClient.Read());
+            return telnetClient.Read();
+/*            var task = Task.Run(() => telnetClient.Read());
             if (task.Wait(TimeSpan.FromSeconds(10)))
             {
                 return task.Result;
@@ -182,7 +185,7 @@ namespace FlightSimulatorApp.Model
             else
             {
                 throw new Exception("Server not responding for 10 seconds");
-            }
+            }*/
         }
 
         //get values for properties from simulator
@@ -192,6 +195,7 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
+                    mutex.WaitOne();
                     this.Write("get /position/latitude-deg");
                     Latitude = Double.Parse(this.Read());
                     this.Write("get /position/longitude-deg");
@@ -214,6 +218,7 @@ namespace FlightSimulatorApp.Model
                     Vertical_Speed = Double.Parse(this.Read());
 
                     Thread.Sleep(250);
+                    mutex.ReleaseMutex();
                 }               
             }).Start();
         }

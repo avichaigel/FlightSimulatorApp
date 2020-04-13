@@ -25,35 +25,35 @@ namespace FlightSimulatorApp.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-        public double VM_air_speed
+        public double VM_Air_Speed
         {
             get => model.Air_Speed;
         }
-        public double VM_altitude
+        public double VM_Altitude
         {
             get => model.Altitude;
         }
-        public double VM_roll
+        public double VM_Roll
         {
             get => model.Roll;
         }
-        public double VM_pitch
+        public double VM_Pitch
         {
             get => model.Pitch;
         }
-        public double VM_altimeter
+        public double VM_Altimeter
         {
             get => model.Altimeter;
         }
-        public double VM_heading
+        public double VM_Heading
         {
             get => model.Heading;
         }
-        public double VM_ground_Speed
+        public double VM_Ground_Speed
         {
             get => model.Ground_Speed;
         }
-        public double VM_vertical_Speed
+        public double VM_Vertical_Speed
         {
             get => model.Vertical_Speed;
         }

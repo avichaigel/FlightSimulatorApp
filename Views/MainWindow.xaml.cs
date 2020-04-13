@@ -21,7 +21,7 @@ namespace FlightSimulatorApp.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = (Application.Current as App).flightSimulatorViewModel;
+            DataContext = (Application.Current as App).MainVM1;
         }
     }
 }

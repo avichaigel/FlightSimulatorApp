@@ -24,15 +24,16 @@ namespace FlightSimulatorApp
 
     public partial class App : Application
     {
-        internal object flightSimulatorViewModel;
         private MainViewModel MainVM;
         private MyFlightModel model;
+
+        internal MainViewModel MainVM1 { get => MainVM; set => MainVM = value; }
 
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
             model = new MyFlightModel(new MyTelnetClient());
 
-            MainVM = new MainViewModel(model);
+            MainVM1 = new MainViewModel(model);
             model.connect("127.0.0.1", 5402);
             model.start();
             Window mainWindow = new MainWindow();

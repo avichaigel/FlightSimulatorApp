@@ -25,11 +25,11 @@ namespace FlightSimulatorApp.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-        public double VM_latitude
+        public double VM_Latitude
         {
             get => model.Latitude;
         }
-        public double VM_longtitude
+        public double VM_Longtitude
         {
             get => model.Longtitude;
         }
