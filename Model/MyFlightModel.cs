@@ -147,11 +147,7 @@ namespace FlightSimulatorApp.Model
         //methods
         public void connect(string ip, int port)
         {
-            var task = Task.Run(() => telnetClient.Connect(ip, port));
-            if (!task.Wait(TimeSpan.FromSeconds(10)))
-            {
-                throw new Exception("Server not connecting");
-            }
+            telnetClient.Connect(ip, port);
         }
 
         public void disconnect()
@@ -166,26 +162,27 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string message)
         {
-            telnetClient.Write(message);
-/*            var task = Task.Run(() => telnetClient.Write(message));
+            var task = Task.Run(() => telnetClient.Write(message));
             if (!task.Wait(TimeSpan.FromSeconds(10)))
             {
-            throw new Exception("Server not responding for 10 seconds");
-            }*/
+                //throw new Exception("Server not responding for 10 seconds");
+                Console.Write("Server not responding for 10 seconds");
+            }
         }
 
         public string Read()
         {
-            return telnetClient.Read();
-/*            var task = Task.Run(() => telnetClient.Read());
+            var task = Task.Run(() => telnetClient.Read());
             if (task.Wait(TimeSpan.FromSeconds(10)))
             {
                 return task.Result;
             }
             else
             {
-                throw new Exception("Server not responding for 10 seconds");
-            }*/
+                //throw new Exception("Server not responding for 10 seconds");
+                Console.Write("Server not responding for 10 seconds");
+                return "Server not responding for 10 seconds";
+            }
         }
 
         //get values for properties from simulator
