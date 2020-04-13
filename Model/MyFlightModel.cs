@@ -29,6 +29,7 @@ namespace FlightSimulatorApp.Model
         private double heading;
         private double ground_Speed;
         private double vertical_Speed;
+        private static Mutex mutex = new Mutex();
 
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
@@ -191,6 +192,7 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
+                    mutex.WaitOne();
                     //this.Write("get /position/latitude-deg");
                     //Latitude = Double.Parse(this.Read());
                     //this.Write("get /position/longitude-deg");
@@ -215,6 +217,7 @@ namespace FlightSimulatorApp.Model
                     //Vertical_Speed = Double.Parse(this.Read());
 
                     Thread.Sleep(250);
+                    mutex.ReleaseMutex();
                 }               
             }).Start();
         }
