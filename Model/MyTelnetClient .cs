@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
+using System.Windows;
 
 namespace FlightSimulatorApp.Model
 {
@@ -14,12 +14,25 @@ namespace FlightSimulatorApp.Model
     {
         private TcpClient client;
         private bool IsConnected = false;
+        private bool telnetError;
         public void Connect(string ip, int port)
         {
             //ip = "1.0.0.127";
             //port = 5402;
             client = new TcpClient();
-            client.Connect(ip, port);
+            IsConnected = true;
+            try
+            {
+                client.Connect(ip, port);
+                telnetError = false;
+            }
+            catch (Exception)
+            {
+                telnetError = true;
+                //(Application.Current as App).model.Err = "Couldn't connect to server";
+                Console.WriteLine("Couldn't connect to server");
+            }
+
         }
 
         public void Disconnect()
@@ -60,13 +73,30 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string command)
         {
-            string official_command = command + "\n";
-            byte[] read = Encoding.ASCII.GetBytes(official_command);
-            client.GetStream().Write(read, 0, read.Length);
-            //byte[] buffer = new byte[1024];
-            //client.GetStream().Read(buffer, 0, 1024);
-            //string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            //Console.WriteLine(data);
+            if (IsConnected)
+            {
+                try
+                {
+                    string official_command = command + "\n";
+                    byte[] read = Encoding.ASCII.GetBytes(official_command);
+                    client.GetStream().Write(read, 0, read.Length);
+                }
+                catch (Exception)
+                {
+                    telnetError = true;
+                    Disconnect();
+                    if (!telnetError)
+                    {
+                        //(Application.Current as App).model.Err = "Server Communication is done";
+                        Console.WriteLine("Server Communication is done");
+                    }
+                }
+            }
+        }
+
+        public bool getTelnetError()
+        {
+            return this.telnetError;
         }
     }
 }
