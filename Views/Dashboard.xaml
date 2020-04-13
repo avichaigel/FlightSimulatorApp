@@ -73,7 +73,7 @@
 " HorizontalAlignment="Center" Text="Air Speed:"/>
         </Border>
         <Border Margin="200,0.333,0,-4" Grid.Row="7" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_AirSpeed}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Air_Speed}"/>
         </Border>
 
     </Grid>

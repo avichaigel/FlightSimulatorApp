@@ -13,7 +13,8 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private string headingAddress, verticalSpeedAddress, groundSpeedAddress, airSpeedAddress, altitudeAddress, rollAddress, pitchAddress,
+            altimeterAddress, latitudeAddress, longitudeAddress;
         private double throttle;
         private double aileron;
         private double elevator;
@@ -32,7 +33,9 @@ namespace FlightSimulatorApp.Model
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
         {
+            initializeAddresses();
             this.telnetClient = telnetClient;
+            initializeDashboard();
         }
         //Properties
         public double Throttle
@@ -188,26 +191,28 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    this.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(this.Read());
-                    this.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    Air_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(this.Read());
+                    //this.Write("get /position/latitude-deg");
+                    //Latitude = Double.Parse(this.Read());
+                    //this.Write("get /position/longitude-deg");
+                    //Longtitude = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                    telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                    string tempStr = telnetClient.Read();
+                    Air_Speed = Double.Parse(tempStr);
+                    //this.Write("get /instrumentation/gps/indicated-altitude-ft");
+                    //Altitude = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                    //Roll = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                    //Pitch = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                    //Altimeter = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                    //Heading = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                    //Ground_Speed = Double.Parse(this.Read());
+                    //this.Write("get /instrumentation/gps/indicated-vertical-speed");
+                    //Vertical_Speed = Double.Parse(this.Read());
 
                     Thread.Sleep(250);
                 }               
@@ -217,6 +222,38 @@ namespace FlightSimulatorApp.Model
         void IFlightModel.NotifyPropertyChanged(string propName)
         {
             throw new NotImplementedException();
+        }
+
+        public void initializeDashboard()
+        {
+            // Initialize all the properties to 0.s.
+            Air_Speed = 0;
+            Altitude = 0;
+            Roll = 0;
+            Pitch = 0;
+            Altimeter = 0;
+            Heading = 0;
+            Ground_Speed = 0;
+            Vertical_Speed = 0;
+            // Reading map values from the simulator.
+            Latitude = 0;
+            Longtitude = 0;
+            //Location = latitude + "," + longitude;
+        }
+
+        private void initializeAddresses()
+        {
+            airSpeedAddress = "/instrumentation/airspeed-indicator/indicated-speed-kt";
+            altitudeAddress = "/instrumentation/gps/indicated-altitude-ft";
+            rollAddress = "/instrumentation/attitude-indicator/internal-roll-deg";
+            pitchAddress = "/instrumentation/attitude-indicator/internal-pitch-deg";
+            altimeterAddress = "/instrumentation/altimeter/indicated-altitude-ft";
+            headingAddress = "/instrumentation/heading-indicator/indicated-heading-deg";
+            groundSpeedAddress = "/instrumentation/gps/indicated-ground-speed-kt";
+            verticalSpeedAddress = "/instrumentation/gps/indicated-vertical-speed";
+            // Reading map values from the simulator.
+            latitudeAddress = "/position/latitude-deg";
+            longitudeAddress = "/position/longitude-deg";
         }
     }
 }

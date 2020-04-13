@@ -21,7 +21,14 @@ namespace FlightSimulatorApp.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = (Application.Current as App).flightSimulatorViewModel;
+            //DataContext = (Application.Current as App).flightVM;
+            DataContext = new
+            {
+                myMapControl = (Application.Current as App).MapVM, 
+                myDashboard = (Application.Current as App).dashboardVM,
+                myControllers = (Application.Current as App).controllersVM,
+            };
+            
         }
     }
 }

@@ -24,19 +24,48 @@ namespace FlightSimulatorApp
 
     public partial class App : Application
     {
-        internal object flightSimulatorViewModel;
-        private MainViewModel MainVM;
+        //public FlightViewModel flightVM;
         private MyFlightModel model;
+        public MapViewModel MapVM;
+        //private SlidersViewModel slidersVM;
+        public DashboardViewModel dashboardVM;
+        public ControllersViewModel controllersVM;
+        
 
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
             model = new MyFlightModel(new MyTelnetClient());
+            //flightVM = new FlightViewModel(model);
+            MapVM = new MapViewModel(model);
+            dashboardVM = new DashboardViewModel(model);
+            controllersVM = new ControllersViewModel(model);
 
-            MainVM = new MainViewModel(model);
             model.connect("127.0.0.1", 5402);
             model.start();
             Window mainWindow = new MainWindow();
             mainWindow.Show();
         }
+
+
+        //internal object flightSimulatorViewModel;
+        //internal object MainViewModel;
+        //private MyFlightModel model;
+
+        //private void Application_Startup(Object sender, StartupEventArgs e)
+        //{
+        //    model = new MyFlightModel(new MyTelnetClient());
+
+        //    MainVM = new MainViewModel(model);
+        //    model.connect("127.0.0.1", 5402);
+        //    model.start();
+        //    Window mainWindow = new MainWindow();
+        //    mainWindow.Show();
+        //}
+        //private MapViewModel MapVM { get => MapVM; set => MapVM = value; }
+        ////private SlidersViewModel slidersVM;
+        //private DashboardViewModel dashboardVM { get => dashboardVM; set => dashboardVM = value; }
+        //private ControllersViewModel controllersVM { get => controllersVM; set => controllersVM = value; }
+        //private MyFlightModel model;
+
     }
 }
