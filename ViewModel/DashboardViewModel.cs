@@ -25,7 +25,7 @@ namespace FlightSimulatorApp.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
-        public double VM_air_speed
+        public double VM_Air_Speed
         {
             get => model.Air_Speed;
         }
