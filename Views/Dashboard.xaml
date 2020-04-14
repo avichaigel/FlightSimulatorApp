@@ -19,53 +19,53 @@
         </Grid.RowDefinitions>
         <!--left column-->
         <Border Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,200,0">
-            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="GPS Altitude:"/>
+            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Altitude:"/>
         </Border>
         <Border Grid.ColumnSpan="2" Margin="0,23,200,0" Grid.RowSpan="2" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_GpsAltitude}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Altitude}"/>
         </Border>
 
         <Border Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,200,0">
-            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Internal Roll Deg:"/>
+            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Roll:"/>
         </Border>
         <Border Grid.ColumnSpan="2" Margin="0,23,200,0" Grid.Row="2" Grid.RowSpan="2" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_InternalRollDeg}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Roll}"/>
         </Border>
 
         <Border Grid.Row="4" Grid.ColumnSpan="2" Margin="0,0,200,0">
-            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Internal Pitch Deg:"/>
+            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Pitch:"/>
         </Border>
         <Border Grid.ColumnSpan="2" Margin="0,23,200,0" Grid.Row="4" Grid.RowSpan="2" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_InternalPitchDeg}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Pitch}"/>
         </Border>
 
         <Border Grid.Row="6" Grid.ColumnSpan="2" Margin="0,0,200,0">
-            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Altimeter Altitute:"/>
+            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Altimeter:"/>
         </Border>
         <Border Grid.ColumnSpan="2" Margin="0,23,200,0" Grid.Row="6" Grid.RowSpan="2" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_AltimeterAltitude}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Altimeter}"/>
         </Border>
 
         <!--right column-->
         <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="200,0,0,0">
-            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="heading:"/>
+            <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Heading:"/>
         </Border>
         <Border Margin="200,25,0,22.667" Grid.RowSpan="3" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_HeadingDeg}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Heading}"/>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="200,0,0,0">
             <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Vertical Speed:"/>
         </Border>
         <Border Margin="200,0.333,0,22" Grid.RowSpan="2" Grid.Row="3" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_GpsVerticalSpeed}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Vertical_Speed}"/>
         </Border>
 
         <Border Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="200,0,0,0">
             <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="Ground Speed:"/>
         </Border>
         <Border Margin="200,0,0,21.667" Grid.RowSpan="2" Grid.Row="5" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_GpsGroundSpeed}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_Ground_Speed}"/>
         </Border>
 
         <Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Margin="200,0,0,0">
