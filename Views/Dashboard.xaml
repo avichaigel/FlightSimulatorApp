@@ -51,7 +51,7 @@
             <TextBlock Foreground="black" FontSize="16" HorizontalAlignment="Center" Text="heading:"/>
         </Border>
         <Border Margin="200,25,0,22.667" Grid.RowSpan="3" >
-            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_HeadingDeg}"/>
+            <TextBlock Foreground="black" FontSize="14" HorizontalAlignment="Center" Text="{Binding VM_HeadingDegz}"/>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="200,0,0,0">

@@ -32,10 +32,9 @@ namespace FlightSimulatorApp
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
             model = new MyFlightModel(new MyTelnetClient());
-
             MainVM1 = new MainViewModel(model);
-            model.connect("127.0.0.1", 5402);
-            model.start();
+            model.Connect("127.0.0.1", 5402);
+            model.Start();
             Window mainWindow = new MainWindow();
             mainWindow.Show();
         }

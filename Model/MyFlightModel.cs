@@ -11,7 +11,7 @@ namespace FlightSimulatorApp.Model
     public class MyFlightModel : IFlightModel
     {
         ITelnetClient telnetClient;
-        volatile Boolean stop;
+        public volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
 
@@ -145,34 +145,45 @@ namespace FlightSimulatorApp.Model
         }
 
         //methods
-        public void connect(string ip, int port)
+        public void Connect(string ip, int port)
         {
             telnetClient.Connect(ip, port);
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
+            stop = true;
             telnetClient.Disconnect();
         }
 
         private void NotifyPropertyChanged(string propName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
 
         public void Write(string message)
         {
-            var task = Task.Run(() => telnetClient.Write(message));
+            telnetClient.Write(message);
+            //TODO undo commenting out
+
+/*            var task = Task.Run(() => telnetClient.Write(message));
             if (!task.Wait(TimeSpan.FromSeconds(10)))
             {
                 //throw new Exception("Server not responding for 10 seconds");
                 Console.Write("Server not responding for 10 seconds");
-            }
+                //TODO instead of printing, send this message to View
+            }*/
         }
 
         public string Read()
         {
-            var task = Task.Run(() => telnetClient.Read());
+            return telnetClient.Read();
+            //TODO undo commenting out
+
+/*            var task = Task.Run(() => telnetClient.Read());
             if (task.Wait(TimeSpan.FromSeconds(10)))
             {
                 return task.Result;
@@ -182,11 +193,12 @@ namespace FlightSimulatorApp.Model
                 //throw new Exception("Server not responding for 10 seconds");
                 Console.Write("Server not responding for 10 seconds");
                 return "Server not responding for 10 seconds";
-            }
+                //TODO instead of printing, send this message to View
+            }*/
         }
 
         //get values for properties from simulator
-        public void start()
+        public void Start()
         {
             new Thread(delegate ()
             {

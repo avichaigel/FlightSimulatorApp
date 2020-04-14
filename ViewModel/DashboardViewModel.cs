@@ -11,6 +11,7 @@ namespace FlightSimulatorApp.ViewModel
     class DashboardViewModel : INotifyPropertyChanged
     {
         private IFlightModel model;
+        public event PropertyChangedEventHandler PropertyChanged;
         public DashboardViewModel(IFlightModel model)
         {
             this.model = model;
@@ -20,10 +21,11 @@ namespace FlightSimulatorApp.ViewModel
                     NotifyPropertyChanged("VM_" + e.PropertyName);
                 };
         }
-        public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (this.PropertyChanged != null) {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
         public double VM_Air_Speed
         {

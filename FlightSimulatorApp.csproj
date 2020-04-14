@@ -67,7 +67,6 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\RegularNotify.cs" />
-    <Compile Include="ViewModel\FlightViewModel.cs" />
     <Compile Include="Views\Controllers.xaml.cs">
       <DependentUpon>Controllers.xaml</DependentUpon>
     </Compile>

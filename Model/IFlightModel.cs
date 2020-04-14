@@ -29,8 +29,8 @@ namespace FlightSimulatorApp.Model
 
 
         //connection to the simulator
-        void connect(string ip, int port);
-        void disconnect();
-        void start();
+        void Connect(string ip, int port);
+        void Disconnect();
+        void Start();
     }
 }

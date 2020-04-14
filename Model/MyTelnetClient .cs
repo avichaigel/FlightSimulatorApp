@@ -94,7 +94,7 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public bool getTelnetError()
+        public bool GetTelnetError()
         {
             return this.telnetError;
         }
