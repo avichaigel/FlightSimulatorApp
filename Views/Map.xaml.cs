@@ -31,6 +31,7 @@ namespace FlightSimulatorApp.Views
             InitializeComponent();
             _latitude = 0; _longtitude = 0; newLat = 0; newLong = 0;
             latDelta = 0; longDelta = 0; deg = 0; newDeg = 0;
+            DataContext = (Application.Current as App).MapVM;
         }
 
         private void PlaneRotate()
