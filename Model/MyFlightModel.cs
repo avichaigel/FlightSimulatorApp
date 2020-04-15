@@ -91,7 +91,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
-                NotifyPropertyChanged("Longtitude");
+                NotifyPropertyChanged("Latitude");
             }
         }
         public double Longtitude {
@@ -179,7 +179,10 @@ namespace FlightSimulatorApp.Model
 
         private void NotifyPropertyChanged(string propName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
 
         public void Write(string message)
@@ -238,7 +241,7 @@ namespace FlightSimulatorApp.Model
 
                         Thread.Sleep(250);
                     }
-                    catch (IOException)
+                    catch (Exception)
                     {
                         Error = "Connection with server is lost";
                     }
