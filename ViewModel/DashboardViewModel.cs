@@ -23,7 +23,10 @@ namespace FlightSimulatorApp.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
         public double VM_Air_Speed
         {
@@ -56,6 +59,11 @@ namespace FlightSimulatorApp.ViewModel
         public double VM_Vertical_Speed
         {
             get => model.Vertical_Speed;
+        }
+
+        public string VM_Error
+        {
+            get => model.Error;
         }
     }
 }

@@ -40,8 +40,8 @@ namespace FlightSimulatorApp
             dashboardVM = new DashboardViewModel(model);
             controllersVM = new ControllersViewModel(model);
 
-            model.connect("127.0.0.1", 5402);
-            model.start();
+            model.Connect("127.0.0.1", 5402);
+            model.Start();
             Window mainWindow = new MainWindow();
             mainWindow.Show();
         }
