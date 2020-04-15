@@ -26,19 +26,19 @@ namespace FlightSimulatorApp.ViewModel
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public double VM_elevator
+        public double VM_Elevator
         {
             set => model.Elevator = value;
         }
-        public double VM_rudder
+        public double VM_Rudder
         {
             set => model.Rudder = value;
         }
-        public double VM_throttle
+        public double VM_Throttle
         {
             set => model.Throttle = value;
         }
-        public double VM_aileron
+        public double VM_Aileron
         {
             set => model.Aileron = value;
         }

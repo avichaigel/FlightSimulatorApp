@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp.Model
 {
@@ -26,7 +27,8 @@ namespace FlightSimulatorApp.Model
         double Heading { get; set; }
         double Ground_Speed { get; set; }
         double Vertical_Speed { get; set; }
-
+        
+        string Location { get; set; }
 
         //connection to the simulator
         void connect(string ip, int port);

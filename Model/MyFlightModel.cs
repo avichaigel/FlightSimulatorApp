@@ -13,8 +13,6 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
-        private string headingAddress, verticalSpeedAddress, groundSpeedAddress, airSpeedAddress, altitudeAddress, rollAddress, pitchAddress,
-            altimeterAddress, latitudeAddress, longitudeAddress;
         private double throttle;
         private double aileron;
         private double elevator;
@@ -29,12 +27,12 @@ namespace FlightSimulatorApp.Model
         private double heading;
         private double ground_Speed;
         private double vertical_Speed;
+        private string location;
         private static Mutex mutex = new Mutex();
 
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
         {
-            initializeAddresses();
             this.telnetClient = telnetClient;
             initializeDashboard();
         }
@@ -147,6 +145,16 @@ namespace FlightSimulatorApp.Model
             }
         }
 
+        public string Location
+        {
+            get => location;
+            set
+            {
+                location = value;
+                NotifyPropertyChanged("Location");
+            }
+        }
+
         //methods
         public void connect(string ip, int port)
         {
@@ -194,11 +202,12 @@ namespace FlightSimulatorApp.Model
                 {
                     mutex.WaitOne();
                     this.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(this.Read());
+                    string tempStr = telnetClient.Read();
+                    Latitude = Double.Parse(tempStr);
                     this.Write("get /position/longitude-deg");
                     Longtitude = Double.Parse(this.Read());
                     telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    string tempStr = telnetClient.Read();
+                    tempStr = telnetClient.Read();
                     Air_Speed = Double.Parse(tempStr);
                     this.Write("get /instrumentation/gps/indicated-altitude-ft");
                     Altitude = Double.Parse(this.Read());
@@ -214,6 +223,7 @@ namespace FlightSimulatorApp.Model
                     Ground_Speed = Double.Parse(this.Read());
                     this.Write("get /instrumentation/gps/indicated-vertical-speed");
                     Vertical_Speed = Double.Parse(this.Read());
+                    Location = latitude.ToString() + "," +   longtitude.ToString();
 
                     Thread.Sleep(250);
                     mutex.ReleaseMutex();
@@ -240,22 +250,7 @@ namespace FlightSimulatorApp.Model
             // Reading map values from the simulator.
             Latitude = 0;
             Longtitude = 0;
-            //Location = latitude + "," + longitude;
-        }
-
-        private void initializeAddresses()
-        {
-            airSpeedAddress = "/instrumentation/airspeed-indicator/indicated-speed-kt";
-            altitudeAddress = "/instrumentation/gps/indicated-altitude-ft";
-            rollAddress = "/instrumentation/attitude-indicator/internal-roll-deg";
-            pitchAddress = "/instrumentation/attitude-indicator/internal-pitch-deg";
-            altimeterAddress = "/instrumentation/altimeter/indicated-altitude-ft";
-            headingAddress = "/instrumentation/heading-indicator/indicated-heading-deg";
-            groundSpeedAddress = "/instrumentation/gps/indicated-ground-speed-kt";
-            verticalSpeedAddress = "/instrumentation/gps/indicated-vertical-speed";
-            // Reading map values from the simulator.
-            latitudeAddress = "/position/latitude-deg";
-            longitudeAddress = "/position/longitude-deg";
+            //Location = latitude + "," + longtitude;
         }
     }
 }
