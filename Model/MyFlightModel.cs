@@ -78,7 +78,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
-                NotifyPropertyChanged("Longtitude");
+                NotifyPropertyChanged("Latitude");
             }
         }
         public double Longtitude {
@@ -308,9 +308,5 @@ namespace FlightSimulatorApp.Model
                 this.telnetClient.Read();
             }
         }
-
-
-
-
     }
 }
