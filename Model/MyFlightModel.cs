@@ -78,7 +78,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
-                NotifyPropertyChanged("Longtitude");
+                NotifyPropertyChanged("Latitude");
             }
         }
         public double Longtitude {
