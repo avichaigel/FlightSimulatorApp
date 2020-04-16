@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,9 +15,9 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
-        private string headingAddress, verticalSpeedAddress, groundSpeedAddress, airSpeedAddress, altitudeAddress, rollAddress, pitchAddress,
-            altimeterAddress, latitudeAddress, longitudeAddress;
+        private static Mutex mutex = new Mutex();
         private string errorMsg;
+
         private double throttle;
         private double aileron;
         private double elevator;
@@ -32,7 +33,6 @@ namespace FlightSimulatorApp.Model
         private double ground_Speed;
         private double vertical_Speed;
         private string location;
-        private static Mutex mutex = new Mutex();
 
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
@@ -56,7 +56,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 throttle = value;
-                this.Write("set /controls/engines/current-engine/throttle " + value);
+                telnetClient.Write("set /controls/engines/current-engine/throttle " + value);
             }
         }
         public double Aileron
@@ -65,7 +65,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
-                this.Write("set /controls/flight/aileron " + value);
+                telnetClient.Write("set /controls/flight/aileron " + value);
             }
         }
         public double Elevator
@@ -74,7 +74,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
-                this.Write("set /controls/flight/elevator " + value);
+                telnetClient.Write("set /controls/flight/elevator " + value);
             }
         }
         public double Rudder
@@ -83,7 +83,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
-                this.Write("set /controls/flight/rudder " + value);
+                telnetClient.Write("set /controls/flight/rudder " + value);
             }
         }
         public double Latitude {
@@ -195,24 +195,15 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public void Write(string message)
+        public string Read(double currentValue)
         {
-            DateTime startTime = DateTime.Now;
-            telnetClient.Write(message);
-            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
-            {
-                Error = "Server not responding for 10 seconds";
-            }
-        }
-
-        public string Read()
-        {
-            DateTime startTime = DateTime.Now;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             var read = telnetClient.Read();
-            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
+            if (sw.ElapsedMilliseconds > 10000)
             {
                 Error = "Server not responding for 10 seconds";
-                return read;
+                return currentValue.ToString();
                 //TODO check if "return read" is good, or maybe something else should be returned
             }
             return read;
@@ -228,26 +219,26 @@ namespace FlightSimulatorApp.Model
                     mutex.WaitOne();
                     try
                     {
-                        this.Write("get /position/latitude-deg");
-                        Latitude = Double.Parse(this.Read());
-                        this.Write("get /position/longitude-deg");
-                        Longtitude = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                        Air_Speed = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/gps/indicated-altitude-ft");
-                        Altitude = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                        Roll = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                        Pitch = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                        Altimeter = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                        Heading = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                        Ground_Speed = Double.Parse(this.Read());
-                        this.Write("get /instrumentation/gps/indicated-vertical-speed");
-                        Vertical_Speed = Double.Parse(this.Read());
+                        telnetClient.Write("get /position/latitude-deg");
+                        Latitude = Double.Parse(this.Read(latitude));
+                        telnetClient.Write("get /position/longitude-deg");
+                        Longtitude = Double.Parse(this.Read(longtitude));
+                        telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                        Air_Speed = Double.Parse(this.Read(air_Speed));
+                        telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
+                        Altitude = Double.Parse(this.Read(altitude));
+                        telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                        Roll = Double.Parse(this.Read(roll));
+                        telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                        Pitch = Double.Parse(this.Read(pitch));
+                        telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                        Altimeter = Double.Parse(this.Read(altimeter));
+                        telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                        Heading = Double.Parse(this.Read(heading));
+                        telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                        Ground_Speed = Double.Parse(this.Read(ground_Speed));
+                        telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
+                        Vertical_Speed = Double.Parse(this.Read(vertical_Speed));
                         Location = latitude.ToString() + "," + longtitude.ToString();
 
                         Thread.Sleep(250);
