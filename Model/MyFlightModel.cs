@@ -14,7 +14,9 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
+        private static Mutex mutex = new Mutex();
         private string errorMsg;
+
         private double throttle;
         private double aileron;
         private double elevator;
@@ -30,7 +32,6 @@ namespace FlightSimulatorApp.Model
         private double ground_Speed;
         private double vertical_Speed;
         private string location;
-        private static Mutex mutex = new Mutex();
 
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
