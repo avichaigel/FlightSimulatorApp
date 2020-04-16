@@ -18,8 +18,6 @@ namespace FlightSimulatorApp.Model
 
         public void Connect(string ip, int port)
         {
-            //ip = "1.0.0.127";
-            //port = 5402;
             client = new TcpClient();
             IsConnected = true;
             client.Connect(ip, port);
@@ -36,9 +34,11 @@ namespace FlightSimulatorApp.Model
 
         public string Read()
         {
+            mutex.WaitOne();
             byte[] buffer = new byte[1024];
             client.GetStream().Read(buffer, 0, 1024);
             string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+            mutex.ReleaseMutex();
             return data;
         }
 
@@ -46,10 +46,12 @@ namespace FlightSimulatorApp.Model
         {
             if (IsConnected)
             {
+                mutex.WaitOne();
                 string official_command = command + "\n";
                 byte[] read = Encoding.ASCII.GetBytes(official_command);
                 client.GetStream().Write(read, 0, read.Length);
+                mutex.ReleaseMutex();
             }
-        } 
+        }
     }
 }

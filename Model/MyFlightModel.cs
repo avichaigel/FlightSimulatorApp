@@ -193,18 +193,22 @@ namespace FlightSimulatorApp.Model
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+            mutex.ReleaseMutex();
         }
 
         public string Read(double currentValue)
         {
+            mutex.WaitOne();
             Stopwatch sw = new Stopwatch();
             sw.Start();
             var read = telnetClient.Read();
             if (sw.ElapsedMilliseconds > 10000)
             {
                 Error = "Server not responding for 10 seconds";
+                mutex.ReleaseMutex();
                 return currentValue.ToString();
             }
+            mutex.ReleaseMutex();
             return read;
         }
 
@@ -272,5 +276,48 @@ namespace FlightSimulatorApp.Model
             Longtitude = 0;
             //Location = latitude + "," + longtitude;
         }
+
+        public void StartWriting(string command)
+        {
+            this.telnetClient.Write(command);
+            this.telnetClient.Read();
+        }
+
+        /*public void UpdateThrottle(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+            
+        }
+
+        public void UpdateAileron(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }
+
+        public void UpdateRudder(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }
+
+        public void UpdateElevator(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }*/
     }
 }

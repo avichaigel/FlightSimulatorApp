@@ -35,5 +35,6 @@ namespace FlightSimulatorApp.Model
         void Connect(string ip, int port);
         void Disconnect();
         void Start();
+        void StartWriting(string command);
     }
 }
