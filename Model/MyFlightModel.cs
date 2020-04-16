@@ -173,22 +173,28 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string message)
         {
+            mutex.WaitOne();
             var task = Task.Run(() => telnetClient.Write(message));
             if (!task.Wait(TimeSpan.FromSeconds(10)))
             {
-            throw new Exception("Server not responding for 10 seconds");
+                mutex.ReleaseMutex();
+                throw new Exception("Server not responding for 10 seconds");
             }
+            mutex.ReleaseMutex();
         }
 
         public string Read()
         {
+            mutex.WaitOne();
             var task = Task.Run(() => telnetClient.Read());
             if (task.Wait(TimeSpan.FromSeconds(10)))
             {
+                mutex.ReleaseMutex();
                 return task.Result;
             }
             else
             {
+                mutex.ReleaseMutex();
                 throw new Exception("Server not responding for 10 seconds");
             }
         }
@@ -200,33 +206,41 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    //mutex.WaitOne();
-                    this.Write("get /position/latitude-deg");
+                    mutex.WaitOne();
+                    telnetClient.Write("get /position/latitude-deg");
                     string tempStr = telnetClient.Read();
                     Latitude = Double.Parse(tempStr);
                     this.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Longtitude = Double.Parse(tempStr);
                     telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
                     tempStr = telnetClient.Read();
                     Air_Speed = Double.Parse(tempStr);
                     this.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Altitude = Double.Parse(tempStr);
                     this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Roll = Double.Parse(tempStr);
                     this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Pitch = Double.Parse(tempStr);
                     this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Altimeter = Double.Parse(tempStr);
                     this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Heading = Double.Parse(tempStr);
                     this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Ground_Speed = Double.Parse(tempStr);
                     this.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(this.Read());
+                    tempStr = telnetClient.Read();
+                    Vertical_Speed = Double.Parse(tempStr);
                     Location = latitude.ToString() + "," +   longtitude.ToString();
-
+                    mutex.ReleaseMutex();
                     Thread.Sleep(250);
-                    //mutex.ReleaseMutex();
+                    
                 }               
             }).Start();
         }
@@ -258,26 +272,45 @@ namespace FlightSimulatorApp.Model
             await Task.Run(() => telnetClient.Write(command));
         }
 
+        public void UpdateThrottle(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+            
+        }
 
-        /*
-public void UpdateThrottle(double value)
-{
-   throw new NotImplementedException();
-}
+        public void UpdateAileron(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }
 
-public void UpdateAileron(double value)
-{
-   throw new NotImplementedException();
-}
+        public void UpdateRudder(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }
 
-public void UpdateRudder(double value)
-{
-   throw new NotImplementedException();
-}
+        public void UpdateElevator(string command)
+        {
+            if (!stop)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+        }
 
-public void UpdateElevator(double value)
-{
-   throw new NotImplementedException();
-}*/
+
+
+
     }
 }

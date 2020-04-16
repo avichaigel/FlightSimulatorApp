@@ -37,10 +37,10 @@ namespace FlightSimulatorApp.Model
 
         Task StartWriting(string command);
 
-        /*
-        void UpdateThrottle(double value);
-        void UpdateAileron(double value);
-        void UpdateRudder(double value);
-        void UpdateElevator(double value);*/
+        
+        void UpdateThrottle(string command);
+        void UpdateAileron(string command);
+        void UpdateRudder(string command);
+        void UpdateElevator(string command);
     }
 }
