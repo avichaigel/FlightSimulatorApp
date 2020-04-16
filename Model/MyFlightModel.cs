@@ -200,7 +200,7 @@ namespace FlightSimulatorApp.Model
             {
                 while(!stop)
                 {
-                    mutex.WaitOne();
+                    //mutex.WaitOne();
                     this.Write("get /position/latitude-deg");
                     string tempStr = telnetClient.Read();
                     Latitude = Double.Parse(tempStr);
@@ -226,7 +226,7 @@ namespace FlightSimulatorApp.Model
                     Location = latitude.ToString() + "," +   longtitude.ToString();
 
                     Thread.Sleep(250);
-                    mutex.ReleaseMutex();
+                    //mutex.ReleaseMutex();
                 }               
             }).Start();
         }
@@ -252,5 +252,32 @@ namespace FlightSimulatorApp.Model
             Longtitude = 0;
             //Location = latitude + "," + longtitude;
         }
+
+        public async Task StartWriting(string command)
+        {
+            await Task.Run(() => telnetClient.Write(command));
+        }
+
+
+        /*
+public void UpdateThrottle(double value)
+{
+   throw new NotImplementedException();
+}
+
+public void UpdateAileron(double value)
+{
+   throw new NotImplementedException();
+}
+
+public void UpdateRudder(double value)
+{
+   throw new NotImplementedException();
+}
+
+public void UpdateElevator(double value)
+{
+   throw new NotImplementedException();
+}*/
     }
 }

@@ -34,5 +34,13 @@ namespace FlightSimulatorApp.Model
         void connect(string ip, int port);
         void disconnect();
         void start();
+
+        Task StartWriting(string command);
+
+        /*
+        void UpdateThrottle(double value);
+        void UpdateAileron(double value);
+        void UpdateRudder(double value);
+        void UpdateElevator(double value);*/
     }
 }

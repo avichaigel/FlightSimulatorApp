@@ -15,23 +15,26 @@ namespace FlightSimulatorApp.Model
         private TcpClient client;
         private bool IsConnected = false;
         private bool telnetError;
+        private static Mutex mutex = new Mutex();
         public void Connect(string ip, int port)
         {
-            //ip = "1.0.0.127";
-            //port = 5402;
+            //client = new TcpClient();
+            //IsConnected = true;
+            //try
+            //{
+            //    client.Connect(ip, port);
+            //    telnetError = false;
+            //}
+            //catch (Exception)
+            //{
+            //    telnetError = true;
+            //    //(Application.Current as App).model.Err = "Couldn't connect to server";
+            //    Console.WriteLine("Couldn't connect to server");
+            //}
             client = new TcpClient();
             IsConnected = true;
-            try
-            {
-                client.Connect(ip, port);
-                telnetError = false;
-            }
-            catch (Exception)
-            {
-                telnetError = true;
-                //(Application.Current as App).model.Err = "Couldn't connect to server";
-                Console.WriteLine("Couldn't connect to server");
-            }
+            client.Connect(ip, port);
+            telnetError = false;
 
         }
 
@@ -62,10 +65,12 @@ namespace FlightSimulatorApp.Model
             //    return wholeMessage.ToString();
             //}
             //return null;
+            mutex.WaitOne();
             byte[] buffer = new byte[1024];
             client.GetStream().Read(buffer, 0, 1024);
             string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
             Console.WriteLine(data);
+            mutex.ReleaseMutex();
             return data;
 
         }
@@ -77,13 +82,16 @@ namespace FlightSimulatorApp.Model
             {
                 try
                 {
+                    mutex.WaitOne();
                     string official_command = command + "\n";
                     byte[] read = Encoding.ASCII.GetBytes(official_command);
                     client.GetStream().Write(read, 0, read.Length);
+                    mutex.ReleaseMutex();
                 }
                 catch (Exception)
                 {
                     telnetError = true;
+                    mutex.ReleaseMutex();
                     Disconnect();
                     if (!telnetError)
                     {
