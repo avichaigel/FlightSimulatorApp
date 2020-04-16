@@ -187,8 +187,9 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string message)
         {
-            var task = Task.Run(() => telnetClient.Write(message));
-            if (!task.Wait(TimeSpan.FromSeconds(10)))
+            DateTime startTime = DateTime.Now;
+            telnetClient.Write(message);
+            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
             {
                 Error = "Server not responding for 10 seconds";
             }
@@ -196,16 +197,14 @@ namespace FlightSimulatorApp.Model
 
         public string Read()
         {
-            var task = Task.Run(() => telnetClient.Read());
-            if (task.Wait(TimeSpan.FromSeconds(10)))
-            {
-                return task.Result;
-            }
-            else
+            DateTime startTime = DateTime.Now;
+            var read = telnetClient.Read();
+            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
             {
                 Error = "Server not responding for 10 seconds";
-                return "1";
+                return read;
             }
+            return read;
         }
 
         //get values for properties from simulator
