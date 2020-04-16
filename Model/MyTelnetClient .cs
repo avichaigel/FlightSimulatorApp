@@ -21,18 +21,7 @@ namespace FlightSimulatorApp.Model
             //port = 5402;
             client = new TcpClient();
             IsConnected = true;
-            try
-            {
-                client.Connect(ip, port);
-                telnetError = false;
-            }
-            catch (Exception)
-            {
-                telnetError = true;
-                //(Application.Current as App).model.Err = "Couldn't connect to server";
-                Console.WriteLine("Couldn't connect to server");
-            }
-
+            client.Connect(ip, port);
         }
 
         public void Disconnect()
@@ -94,7 +83,7 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public bool getTelnetError()
+        public bool GetTelnetError()
         {
             return this.telnetError;
         }

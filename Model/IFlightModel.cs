@@ -13,6 +13,7 @@ namespace FlightSimulatorApp.Model
         event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged(string propName);
 
+        string Error { get; set; }
         double Throttle { get; set; }
         double Aileron { get; set; }
         double Elevator { get; set; }
@@ -31,8 +32,8 @@ namespace FlightSimulatorApp.Model
         string Location { get; set; }
 
         //connection to the simulator
-        void connect(string ip, int port);
-        void disconnect();
-        void start();
+        void Connect(string ip, int port);
+        void Disconnect();
+        void Start();
     }
 }
