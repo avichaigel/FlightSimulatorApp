@@ -204,7 +204,6 @@ namespace FlightSimulatorApp.Model
             {
                 Error = "Server not responding for 10 seconds";
                 return currentValue.ToString();
-                //TODO check if "return read" is good, or maybe something else should be returned
             }
             return read;
         }
