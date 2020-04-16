@@ -193,7 +193,6 @@ namespace FlightSimulatorApp.Model
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
-            mutex.ReleaseMutex();
         }
 
         public string Read(double currentValue)
