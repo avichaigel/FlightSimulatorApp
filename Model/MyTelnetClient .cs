@@ -64,22 +64,9 @@ namespace FlightSimulatorApp.Model
         {
             if (IsConnected)
             {
-                try
-                {
-                    string official_command = command + "\n";
-                    byte[] read = Encoding.ASCII.GetBytes(official_command);
-                    client.GetStream().Write(read, 0, read.Length);
-                }
-                catch (Exception)
-                {
-                    telnetError = true;
-                    Disconnect();
-                    if (!telnetError)
-                    {
-                        //(Application.Current as App).model.Err = "Server Communication is done";
-                        Console.WriteLine("Server Communication is done");
-                    }
-                }
+                string official_command = command + "\n";
+                byte[] read = Encoding.ASCII.GetBytes(official_command);
+                client.GetStream().Write(read, 0, read.Length);
             }
         }
 
