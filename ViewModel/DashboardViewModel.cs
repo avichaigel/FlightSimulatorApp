@@ -28,6 +28,10 @@ namespace FlightSimulatorApp.ViewModel
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
+        public string VM_Error
+        {
+            get => model.Error;
+        }
         public double VM_Air_Speed
         {
             get => model.Air_Speed;
@@ -59,11 +63,6 @@ namespace FlightSimulatorApp.ViewModel
         public double VM_Vertical_Speed
         {
             get => model.Vertical_Speed;
-        }
-
-        public string VM_Error
-        {
-            get => model.Error;
         }
     }
 }
