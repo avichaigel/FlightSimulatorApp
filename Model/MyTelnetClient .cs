@@ -21,18 +21,8 @@ namespace FlightSimulatorApp.Model
             //port = 5402;
             client = new TcpClient();
             IsConnected = true;
-            try
-            {
-                client.Connect(ip, port);
-                telnetError = false;
-            }
-            catch (Exception)
-            {
-                telnetError = true;
-                //(Application.Current as App).model.Err = "Couldn't connect to server";
-                Console.WriteLine("Couldn't connect to server");
-            }
-
+            client.Connect(ip, port);
+            telnetError = false;
         }
 
         public void Disconnect()
@@ -65,38 +55,14 @@ namespace FlightSimulatorApp.Model
             byte[] buffer = new byte[1024];
             client.GetStream().Read(buffer, 0, 1024);
             string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            Console.WriteLine(data);
             return data;
-
         }
-
 
         public void Write(string command)
         {
-            if (IsConnected)
-            {
-                try
-                {
-                    string official_command = command + "\n";
-                    byte[] read = Encoding.ASCII.GetBytes(official_command);
-                    client.GetStream().Write(read, 0, read.Length);
-                }
-                catch (Exception)
-                {
-                    telnetError = true;
-                    Disconnect();
-                    if (!telnetError)
-                    {
-                        //(Application.Current as App).model.Err = "Server Communication is done";
-                        Console.WriteLine("Server Communication is done");
-                    }
-                }
-            }
-        }
-
-        public bool getTelnetError()
-        {
-            return this.telnetError;
+            string official_command = command + "\n";
+            byte[] read = Encoding.ASCII.GetBytes(official_command);
+            client.GetStream().Write(read, 0, read.Length);
         }
     }
 }
