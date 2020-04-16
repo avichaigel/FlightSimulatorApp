@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,7 @@ namespace FlightSimulatorApp.Model
         ITelnetClient telnetClient;
         volatile Boolean stop;
         public event PropertyChangedEventHandler PropertyChanged;
+        private string errorMsg;
         private double throttle;
         private double aileron;
         private double elevator;
@@ -34,9 +36,18 @@ namespace FlightSimulatorApp.Model
         public MyFlightModel(ITelnetClient telnetClient)
         {
             this.telnetClient = telnetClient;
-            initializeDashboard();
+            InitializeDashboard();
         }
         //Properties
+        public string Error
+        {
+            get => errorMsg;
+            set
+            {
+                errorMsg = value;
+                NotifyPropertyChanged("Error");
+            }
+        }
         public double Throttle
         {
             get => throttle;
@@ -156,76 +167,95 @@ namespace FlightSimulatorApp.Model
         }
 
         //methods
-        public void connect(string ip, int port)
+        public void Connect(string ip, int port)
         {
-            telnetClient.Connect(ip, port);
+            try
+            {
+                telnetClient.Connect(ip, port);
+            }
+            catch (Exception)
+            {
+                Error = "Could not connect to server";
+            }
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
+            stop = true;
             telnetClient.Disconnect();
         }
 
         private void NotifyPropertyChanged(string propName)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
 
         public void Write(string message)
         {
-            var task = Task.Run(() => telnetClient.Write(message));
-            if (!task.Wait(TimeSpan.FromSeconds(10)))
+            DateTime startTime = DateTime.Now;
+            telnetClient.Write(message);
+            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
             {
-            throw new Exception("Server not responding for 10 seconds");
+                Error = "Server not responding for 10 seconds";
             }
         }
 
         public string Read()
         {
-            var task = Task.Run(() => telnetClient.Read());
-            if (task.Wait(TimeSpan.FromSeconds(10)))
+            DateTime startTime = DateTime.Now;
+            var read = telnetClient.Read();
+            if (DateTime.Now.Subtract(startTime).TotalMilliseconds > 10000)
             {
-                return task.Result;
+                Error = "Server not responding for 10 seconds";
+                return read;
+                //TODO check if "return read" is good, or maybe something else should be returned
             }
-            else
-            {
-                throw new Exception("Server not responding for 10 seconds");
-            }
+            return read;
         }
 
         //get values for properties from simulator
-        public void start()
+        public void Start()
         {
             new Thread(delegate ()
             {
                 while(!stop)
                 {
                     mutex.WaitOne();
-                    this.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(this.Read());
-                    this.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    Air_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(this.Read());
-                    Location = latitude.ToString() + "," +   longtitude.ToString();
+                    try
+                    {
+                        this.Write("get /position/latitude-deg");
+                        Latitude = Double.Parse(this.Read());
+                        this.Write("get /position/longitude-deg");
+                        Longtitude = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                        Air_Speed = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/gps/indicated-altitude-ft");
+                        Altitude = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                        Roll = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                        Pitch = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                        Altimeter = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                        Heading = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                        Ground_Speed = Double.Parse(this.Read());
+                        this.Write("get /instrumentation/gps/indicated-vertical-speed");
+                        Vertical_Speed = Double.Parse(this.Read());
+                        Location = latitude.ToString() + "," + longtitude.ToString();
 
-                    Thread.Sleep(250);
+                        Thread.Sleep(250);
+                    }
+                    catch (Exception)
+                    {
+                        Error = "Connection with server is lost";
+                    }
                     mutex.ReleaseMutex();
-                }               
+                }
             }).Start();
         }
 
@@ -234,7 +264,7 @@ namespace FlightSimulatorApp.Model
             throw new NotImplementedException();
         }
 
-        public void initializeDashboard()
+        public void InitializeDashboard()
         {
             // Initialize all the properties to 0.s.
             Air_Speed = 0;

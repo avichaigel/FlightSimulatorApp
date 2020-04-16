@@ -28,7 +28,6 @@ namespace FlightSimulatorApp.Views
                 myDashboard = (Application.Current as App).dashboardVM,
                 myControllers = (Application.Current as App).controllersVM,
             };
-            
         }
     }
 }
