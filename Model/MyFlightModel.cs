@@ -43,7 +43,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 throttle = value;
-                this.Write("set /controls/engines/current-engine/throttle " + value + "\n");
+                this.Write("set /controls/engines/current-engine/throttle " + value);
             }
         }
         public double Aileron
@@ -52,7 +52,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
-                this.Write("set /controls/flight/aileron " + value + "\n");
+                this.Write("set /controls/flight/aileron " + value);
             }
         }
         public double Elevator
@@ -61,7 +61,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
-                this.Write("set /controls/flight/elevator " + value + "\n");
+                this.Write("set /controls/flight/elevator " + value);
             }
         }
         public double Rudder
@@ -70,7 +70,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
-                this.Write("set /controls/flight/rudder " + value + "\n");
+                this.Write("set /controls/flight/rudder " + value);
             }
         }
         public double Latitude {
@@ -202,13 +202,11 @@ namespace FlightSimulatorApp.Model
                 {
                     mutex.WaitOne();
                     this.Write("get /position/latitude-deg");
-                    string tempStr = telnetClient.Read();
-                    Latitude = Double.Parse(tempStr);
+                    Latitude = Double.Parse(this.Read());
                     this.Write("get /position/longitude-deg");
                     Longtitude = Double.Parse(this.Read());
-                    telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    tempStr = telnetClient.Read();
-                    Air_Speed = Double.Parse(tempStr);
+                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                    Air_Speed = Double.Parse(this.Read());
                     this.Write("get /instrumentation/gps/indicated-altitude-ft");
                     Altitude = Double.Parse(this.Read());
                     this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
