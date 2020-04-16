@@ -309,9 +309,5 @@ namespace FlightSimulatorApp.Model
                 this.telnetClient.Read();
             }
         }*/
-
-
-
-
     }
 }
