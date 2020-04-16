@@ -267,12 +267,13 @@ namespace FlightSimulatorApp.Model
             //Location = latitude + "," + longtitude;
         }
 
-        public async Task StartWriting(string command)
+        public void StartWriting(string command)
         {
-            await Task.Run(() => telnetClient.Write(command));
+            this.telnetClient.Write(command);
+            this.telnetClient.Read();
         }
 
-        public void UpdateThrottle(string command)
+        /*public void UpdateThrottle(string command)
         {
             if (!stop)
             {
@@ -307,7 +308,7 @@ namespace FlightSimulatorApp.Model
                 this.telnetClient.Write(command);
                 this.telnetClient.Read();
             }
-        }
+        }*/
 
 
 

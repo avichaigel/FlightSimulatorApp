@@ -42,7 +42,8 @@ namespace FlightSimulatorApp.ViewModel
                         value = 0;
                     }
                     stringThrottle += value.ToString();
-                    model.UpdateThrottle(stringThrottle);
+                    //model.UpdateThrottle(stringThrottle);
+                    model.StartWriting(stringThrottle);
                 }
             }
         }
@@ -55,7 +56,8 @@ namespace FlightSimulatorApp.ViewModel
                 {
                     string stringRudder = "set /controls/flight/rudder ";
                     stringRudder += value.ToString();
-                    model.UpdateRudder(stringRudder);
+                    //model.UpdateRudder(stringRudder);
+                    model.StartWriting(stringRudder);
                 }
 
             }
@@ -78,7 +80,8 @@ namespace FlightSimulatorApp.ViewModel
                     }
 
                     stringAileron += value.ToString();
-                    model.UpdateAileron(stringAileron);
+                    //model.UpdateAileron(stringAileron);
+                    model.StartWriting(stringAileron);
                 }
             }
         }
@@ -99,7 +102,8 @@ namespace FlightSimulatorApp.ViewModel
                         value = -1;
                     }
                     stringElevator += value.ToString();
-                    model.UpdateElevator(stringElevator);
+                    //model.UpdateElevator(stringElevator);
+                    model.StartWriting(stringElevator);
                 }
 
             }

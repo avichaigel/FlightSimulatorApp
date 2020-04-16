@@ -35,12 +35,12 @@ namespace FlightSimulatorApp.Model
         void disconnect();
         void start();
 
-        Task StartWriting(string command);
+        void StartWriting(string command);
 
         
-        void UpdateThrottle(string command);
-        void UpdateAileron(string command);
-        void UpdateRudder(string command);
-        void UpdateElevator(string command);
+        //void UpdateThrottle(string command);
+        //void UpdateAileron(string command);
+        //void UpdateRudder(string command);
+        //void UpdateElevator(string command);
     }
 }
