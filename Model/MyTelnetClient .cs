@@ -60,9 +60,12 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string command)
         {
-            string official_command = command + "\n";
-            byte[] read = Encoding.ASCII.GetBytes(official_command);
-            client.GetStream().Write(read, 0, read.Length);
+            if (IsConnected)
+            {
+                string official_command = command + "\n";
+                byte[] read = Encoding.ASCII.GetBytes(official_command);
+                client.GetStream().Write(read, 0, read.Length);
+            }
         }
     }
 }
