@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
+using System.IO;
 
 namespace FlightSimulatorApp.Model
 {
@@ -21,8 +22,15 @@ namespace FlightSimulatorApp.Model
         public void Connect(string ip, int port)
         {
             client = new TcpClient();
-            isConnected = true;
-            client.Connect(ip, port);
+            try
+            {
+                client.Connect(ip, port);
+                isConnected = true;
+            }
+            catch
+            {
+                throw new IOException("Unable to establish connection to server");
+            }
         }
 
         public void Disconnect()
@@ -37,22 +45,35 @@ namespace FlightSimulatorApp.Model
         public string Read()
         {
             mutex.WaitOne();
-            byte[] buffer = new byte[1024];
-            client.GetStream().Read(buffer, 0, 1024);
-            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            mutex.ReleaseMutex();
-            return data;
+            try
+            {
+                byte[] buffer = new byte[1024];
+                client.GetStream().Read(buffer, 0, 1024);
+                string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+                mutex.ReleaseMutex();
+                return data;
+            }
+            catch
+            {
+                mutex.ReleaseMutex();
+                throw new IOException("Server is not connected");
+            }
         }
 
         public void Write(string command)
         {
-            if (isConnected)
+            mutex.WaitOne();
+            try
             {
-                mutex.WaitOne();
                 string official_command = command + "\n";
                 byte[] read = Encoding.ASCII.GetBytes(official_command);
                 client.GetStream().Write(read, 0, read.Length);
                 mutex.ReleaseMutex();
+            }
+            catch
+            {
+                mutex.ReleaseMutex();
+                throw new IOException("Server is not connected");
             }
         }
     }

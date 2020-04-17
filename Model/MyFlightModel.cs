@@ -180,9 +180,9 @@ namespace FlightSimulatorApp.Model
             {
                 telnetClient.Connect(ip, port);
             }
-            catch (Exception)
+            catch (IOException e)
             {
-                Error = "Could not connect to server";
+                Error = e.Message;
             }
         }
 
@@ -208,7 +208,7 @@ namespace FlightSimulatorApp.Model
             var read = telnetClient.Read();
             if (sw.ElapsedMilliseconds > 10000)
             {
-                Error = "Server not responding for 10 seconds";
+                Error = "Timeout - server has not responded for 10 seconds";
                 mutex.ReleaseMutex();
                 return currentValue.ToString();
             }
@@ -256,9 +256,9 @@ namespace FlightSimulatorApp.Model
 
                         Thread.Sleep(250);
                     }
-                    catch (Exception)
+                    catch (IOException e)
                     {
-                        Error = "Connection with server is lost";
+                        Error = e.Message;
                     }
                     mutex.ReleaseMutex();
                 }
@@ -289,10 +289,14 @@ namespace FlightSimulatorApp.Model
 
         public void StartWriting(string command)
         {
-            if (this.telnetClient.IsConnected)
+            try
             {
                 this.telnetClient.Write(command);
                 this.telnetClient.Read();
+            }
+            catch (IOException e)
+            {
+                Error = e.Message;
             }
         }
 
