@@ -226,12 +226,6 @@ namespace FlightSimulatorApp.Model
                     mutex.WaitOne();
                     try
                     {
-/*                        while (this.controllers.Count > 0)
-                        {
-                            string message = this.controllers.Dequeue();
-                            telnetClient.Write(message);
-                            message = this.Read(0);
-                        }*/
                         telnetClient.Write("get /position/latitude-deg");
                         Latitude = Double.Parse(this.Read(latitude));
                         telnetClient.Write("get /position/longitude-deg");
@@ -258,7 +252,8 @@ namespace FlightSimulatorApp.Model
                     }
                     catch (IOException e)
                     {
-                        Error = e.Message;
+                        this.telnetClient.IsConnected = false;
+                        Error = "Server is not connected";
                     }
                     mutex.ReleaseMutex();
                 }
@@ -289,52 +284,15 @@ namespace FlightSimulatorApp.Model
 
         public void StartWriting(string command)
         {
-            try
+            if (this.telnetClient.IsConnected)
             {
                 this.telnetClient.Write(command);
                 this.telnetClient.Read();
             }
-            catch (IOException e)
+            else
             {
-                Error = e.Message;
+                Error = "Server is not connected";
             }
         }
-
-        /*public void UpdateThrottle(string command)
-        {
-            if (!stop)
-            {
-                this.telnetClient.Write(command);
-                this.telnetClient.Read();
-            }
-            
-        }
-
-        public void UpdateAileron(string command)
-        {
-            if (!stop)
-            {
-                this.telnetClient.Write(command);
-                this.telnetClient.Read();
-            }
-        }
-
-        public void UpdateRudder(string command)
-        {
-            if (!stop)
-            {
-                this.telnetClient.Write(command);
-                this.telnetClient.Read();
-            }
-        }
-
-        public void UpdateElevator(string command)
-        {
-            if (!stop)
-            {
-                this.telnetClient.Write(command);
-                this.telnetClient.Read();
-            }
-        }*/
     }
 }
