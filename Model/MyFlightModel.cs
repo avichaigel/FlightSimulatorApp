@@ -17,6 +17,7 @@ namespace FlightSimulatorApp.Model
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
         private string errorMsg;
+        private Queue<string> controllers = new Queue<string>();
 
         private double throttle;
         private double aileron;
@@ -56,6 +57,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 throttle = value;
+                //controllers.Enqueue("set /controls/engines/current-engine/throttle " + value);
                 telnetClient.Write("set /controls/engines/current-engine/throttle " + value);
             }
         }
@@ -65,6 +67,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
+                //controllers.Enqueue("set /controls/flight/aileron " + value);
                 telnetClient.Write("set /controls/flight/aileron " + value);
             }
         }
@@ -74,6 +77,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
+                //controllers.Enqueue("set /controls/flight/elevator " + value);
                 telnetClient.Write("set /controls/flight/elevator " + value);
             }
         }
@@ -83,6 +87,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
+                //controllers.Enqueue("set /controls/flight/rudder " + value);
                 telnetClient.Write("set /controls/flight/rudder " + value);
             }
         }
@@ -221,6 +226,12 @@ namespace FlightSimulatorApp.Model
                     mutex.WaitOne();
                     try
                     {
+/*                        while (this.controllers.Count > 0)
+                        {
+                            string message = this.controllers.Dequeue();
+                            telnetClient.Write(message);
+                            message = this.Read(0);
+                        }*/
                         telnetClient.Write("get /position/latitude-deg");
                         Latitude = Double.Parse(this.Read(latitude));
                         telnetClient.Write("get /position/longitude-deg");
@@ -278,8 +289,11 @@ namespace FlightSimulatorApp.Model
 
         public void StartWriting(string command)
         {
-            this.telnetClient.Write(command);
-            this.telnetClient.Read();
+            if (this.telnetClient.IsConnected)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
         }
 
         /*public void UpdateThrottle(string command)

@@ -13,21 +13,23 @@ namespace FlightSimulatorApp.Model
     public class MyTelnetClient : ITelnetClient
     {
         private TcpClient client;
-        private bool IsConnected = false;
+        private bool isConnected = false;
         private static Mutex mutex = new Mutex();
+
+        public bool IsConnected { get => isConnected; set => isConnected = value; }
 
         public void Connect(string ip, int port)
         {
             client = new TcpClient();
-            IsConnected = true;
+            isConnected = true;
             client.Connect(ip, port);
         }
 
         public void Disconnect()
         {
-            if (IsConnected)
+            if (isConnected)
             {
-                IsConnected = false;
+                isConnected = false;
                 client.Close();
             }
         }
@@ -44,7 +46,7 @@ namespace FlightSimulatorApp.Model
 
         public void Write(string command)
         {
-            if (IsConnected)
+            if (isConnected)
             {
                 mutex.WaitOne();
                 string official_command = command + "\n";
