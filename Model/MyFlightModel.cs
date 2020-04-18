@@ -14,6 +14,7 @@ namespace FlightSimulatorApp.Model
     {
         ITelnetClient telnetClient;
         volatile Boolean stop;
+        volatile Boolean sentErrorOnce;
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
         private string errorMsg;
@@ -307,8 +308,9 @@ namespace FlightSimulatorApp.Model
                 this.telnetClient.Write(command);
                 this.telnetClient.Read();
             }
-            else
+            else if (!sentErrorOnce)
             {
+                sentErrorOnce = true;
                 Error = "Server is not connected";
             }
         }
