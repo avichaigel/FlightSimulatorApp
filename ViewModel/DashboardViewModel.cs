@@ -28,10 +28,7 @@ namespace FlightSimulatorApp.ViewModel
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
-        public string VM_Error
-        {
-            get => model.Error;
-        }
+        
         public double VM_Air_Speed
         {
             get => model.Air_Speed;

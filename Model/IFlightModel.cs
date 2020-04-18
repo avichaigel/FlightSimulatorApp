@@ -28,7 +28,8 @@ namespace FlightSimulatorApp.Model
         double Heading { get; set; }
         double Ground_Speed { get; set; }
         double Vertical_Speed { get; set; }
-        
+
+        string Status { get; set; }
         string Location { get; set; }
 
         //connection to the simulator

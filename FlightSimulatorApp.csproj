@@ -63,6 +63,7 @@
     <Compile Include="Model\ITelnetClient.cs" />
     <Compile Include="Model\MyFlightModel.cs" />
     <Compile Include="Model\MyTelnetClient .cs" />
+    <Compile Include="ViewModel\ConnectionAndErrorVIewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\ControllersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

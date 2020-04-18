@@ -30,7 +30,7 @@ namespace FlightSimulatorApp
         //private SlidersViewModel slidersVM;
         public DashboardViewModel dashboardVM;
         public ControllersViewModel controllersVM;
-        
+        public ConnectionAndErrorVIewModel connectNErrorVM;
 
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
@@ -39,12 +39,12 @@ namespace FlightSimulatorApp
             MapVM = new MapViewModel(model);
             dashboardVM = new DashboardViewModel(model);
             controllersVM = new ControllersViewModel(model);
+            connectNErrorVM = new ConnectionAndErrorVIewModel(model);
 
             Window mainWindow = new MainWindow();
             mainWindow.Show();
-
-            model.Connect("127.0.0.1", 5402);
-            model.Start();
+            //model.Connect("127.0.0.1", 5402);
+            //model.Start();
         }
 
 

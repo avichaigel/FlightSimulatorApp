@@ -17,8 +17,9 @@ namespace FlightSimulatorApp.Model
         volatile Boolean sentErrorOnce;
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
-        private string errorMsg;
+        private string errorMsg, status;
         private Queue<string> controllers = new Queue<string>();
+
 
         private double throttle;
         private double aileron;
@@ -41,6 +42,7 @@ namespace FlightSimulatorApp.Model
         {
             this.telnetClient = telnetClient;
             InitializeDashboard();
+            status = "Disconnected";
         }
         //Properties
         public string Error
@@ -197,7 +199,10 @@ namespace FlightSimulatorApp.Model
         {
             try
             {
+                stop = false;
+                Status = "Connected";
                 telnetClient.Connect(ip, port);
+                this.Start();
             }
             catch (IOException e)
             {
@@ -207,6 +212,7 @@ namespace FlightSimulatorApp.Model
 
         public void Disconnect()
         {
+            Status = "Disconnected";
             stop = true;
             telnetClient.Disconnect();
         }
@@ -312,6 +318,16 @@ namespace FlightSimulatorApp.Model
             {
                 sentErrorOnce = true;
                 Error = "Server is not connected";
+            }
+        }
+
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                NotifyPropertyChanged("Status");
             }
         }
     }

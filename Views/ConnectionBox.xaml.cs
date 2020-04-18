@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightSimulatorApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -23,27 +24,32 @@ namespace FlightSimulatorApp.Views
 
         private string userIpAddress;
         private string userPortNumber;
-        public ConnectionBox()
+        private ConnectionAndErrorVIewModel cevm;
+        public ConnectionBox(ConnectionAndErrorVIewModel vm)
         {
             InitializeComponent();
+            cevm = vm;
+            DataContext = cevm;
             portSection.Text = ConfigurationManager.AppSettings.Get("Port");
             ipSection.Text = ConfigurationManager.AppSettings.Get("IP");
         }
 
         public string GetIp()
         {
-            return this.userIpAddress;
+            return ipSection.Text;
         }
 
         public string GetPort()
         {
-            return this.userPortNumber;
+            return portSection.Text;
         }
 
         private void connect_server_Click(object sender, RoutedEventArgs e)
         {
-            
-
+            cevm.VM_IP = GetIp();
+            cevm.VM_Port = GetPort();
+            cevm.VM_Connect();
+            this.Close();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)

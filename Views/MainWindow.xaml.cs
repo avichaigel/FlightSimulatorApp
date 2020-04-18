@@ -18,27 +18,41 @@ namespace FlightSimulatorApp.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ConnectionBox cb;
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = (Application.Current as App).flightVM;
             DataContext = new
             {
                 myMapControl = (Application.Current as App).MapVM, 
                 myDashboard = (Application.Current as App).dashboardVM,
                 myControllers = (Application.Current as App).controllersVM,
+                myConnection = (Application.Current as App).connectNErrorVM,
             };
-            
+            cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
         }
 
         private void connect_Click(object sender, RoutedEventArgs e)
         {
-            
+            /*
+            if (!cb.IsLoaded)
+            {
+                cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
+                cb.Show();
+            }*/
+            if (!cb.IsLoaded)
+            {
+                cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
+                cb.Show();
+            }
         }
 
         private void disconnect_Click(object sender, RoutedEventArgs e)
         {
-            
+            if ((Application.Current as App).connectNErrorVM.VM_Status == "Connected")
+            {
+                (Application.Current as App).connectNErrorVM.VM_Disconnect();
+            } 
         }
 
         private void Error_Click(object sender, RoutedEventArgs e)
