@@ -30,5 +30,20 @@ namespace FlightSimulatorApp.Views
             };
             
         }
+
+        private void connect_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Error_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

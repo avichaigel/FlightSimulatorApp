@@ -21,7 +21,8 @@
 
             <!--Map-->
             <myViews:Map x:Name="myMapControl" Height="530" Width="400" Grid.Row="1" Grid.RowSpan="2" Margin="10 0 0 0"/>
-            <!--Dont forget connect box-->
+            <!--Connect box-->
+            
 
 
             <!--Controllers-->

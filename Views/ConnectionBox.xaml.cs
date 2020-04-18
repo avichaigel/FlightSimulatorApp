@@ -42,10 +42,7 @@ namespace FlightSimulatorApp.Views
 
         private void connect_server_Click(object sender, RoutedEventArgs e)
         {
-            //vm.VM_Ip = ipBlock.Text;
-            //vm.VM_Port = portBlock.Text;
-            //vm.VM_Connect();
-            //this.Close();
+            
 
         }
 
