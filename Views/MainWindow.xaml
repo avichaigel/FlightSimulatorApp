@@ -29,8 +29,8 @@
             <myViews:Controllers x:Name="myControllers" Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
 
             <!--Dashboard-->
-            <myViews:Dashboard x:Name="myDashboard" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="10,0,25,270"/>
-            
-        </Grid>
+			<myViews:Dashboard x:Name="myDashboard" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="10,0,25,270"/>
+
+		</Grid>
     </Viewbox>
 </Window>

@@ -201,7 +201,7 @@ namespace FlightSimulatorApp.Model
             }
             catch (IOException e)
             {
-                Error = e.Message;
+                Error = "ERROR: " + e.Message;
             }
         }
 
@@ -222,14 +222,22 @@ namespace FlightSimulatorApp.Model
         public string Read(double currentValue)
         {
             mutex.WaitOne();
+
             Stopwatch sw = new Stopwatch();
             sw.Start();
             var read = telnetClient.Read();
             if (sw.ElapsedMilliseconds > 10000)
             {
-                Error = "Timeout - server has not responded for 10 seconds";
+                Error = "ERROR: Timeout - server has not responded for 10 seconds";
                 mutex.ReleaseMutex();
-                return currentValue.ToString();
+                if (Double.TryParse(read, out double n))
+                {
+                    return read;
+                }
+                else
+                {
+                    return currentValue.ToString();
+                }
             }
             mutex.ReleaseMutex();
             return read;
@@ -272,7 +280,7 @@ namespace FlightSimulatorApp.Model
                     catch (IOException e)
                     {
                         this.telnetClient.IsConnected = false;
-                        Error = "Server is not connected";
+                        Error = "ERROR: " + e.Message;
                     }
                     mutex.ReleaseMutex();
                 }
