@@ -96,7 +96,7 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
-                //North and South pole issue fix
+                //North and South pole + earth coordinates issue fix
                 if (value > 85)
                 {
                     latitude = 84;
@@ -112,7 +112,7 @@ namespace FlightSimulatorApp.Model
             get => longtitude; 
             set {
                 longtitude = value;
-                //North and South pole issue fix
+                //North and South pole + earth coordinates issue fix
                 if (value > 180)
                 {
                     longtitude = 179;
