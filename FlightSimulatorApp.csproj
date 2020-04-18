@@ -39,6 +39,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\RegularNotify.cs" />
+    <Compile Include="Views\ConnectionBox.xaml.cs">
+      <DependentUpon>ConnectionBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controllers.xaml.cs">
       <DependentUpon>Controllers.xaml</DependentUpon>
     </Compile>
@@ -86,6 +90,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ConnectionBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Controllers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

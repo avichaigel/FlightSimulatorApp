@@ -42,6 +42,7 @@ namespace FlightSimulatorApp
 
             Window mainWindow = new MainWindow();
             mainWindow.Show();
+
             model.Connect("127.0.0.1", 5402);
             model.Start();
         }
