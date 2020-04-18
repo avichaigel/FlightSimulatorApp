@@ -111,22 +111,5 @@ namespace FlightSimulatorApp.ViewModel
 
             }
         }
-
-        /*public double VM_Elevator
-        {
-            set => model.Elevator = value;
-        }
-        public double VM_Rudder
-        {
-            set => model.Rudder = value;
-        }
-        public double VM_Throttle
-        {
-            set => model.Throttle = value;
-        }
-        public double VM_Aileron
-        {
-            set => model.Aileron = value;
-        }*/
     }
 }

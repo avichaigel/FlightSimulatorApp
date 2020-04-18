@@ -96,6 +96,15 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
+                //North and South pole issue fix
+                if (value > 85)
+                {
+                    latitude = 84;
+                }
+                if (value < -85)
+                {
+                    latitude = -84;
+                }
                 NotifyPropertyChanged("Latitude");
             }
         }
@@ -103,6 +112,15 @@ namespace FlightSimulatorApp.Model
             get => longtitude; 
             set {
                 longtitude = value;
+                //North and South pole issue fix
+                if (value > 180)
+                {
+                    longtitude = 179;
+                }
+                if (value < -180)
+                {
+                    longtitude = -179;
+                }
                 NotifyPropertyChanged("Longtitude");
             }
         }
