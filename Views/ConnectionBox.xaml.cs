@@ -22,8 +22,8 @@ namespace FlightSimulatorApp.Views
     public partial class ConnectionBox : Window
     {
 
-        private string userIpAddress;
-        private string userPortNumber;
+/*        private string userIpAddress;
+        private string userPortNumber;*/
         private ConnectionAndErrorVIewModel cevm;
         public ConnectionBox(ConnectionAndErrorVIewModel vm)
         {
