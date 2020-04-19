@@ -7,7 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="800">
     
-    <Grid TextBlock.FontSize="20">            <Grid.RowDefinitions>                <RowDefinition Height="Auto"/>                <RowDefinition Height="Auto"/>            </Grid.RowDefinitions>            <Grid.ColumnDefinitions>                <ColumnDefinition Width="90"/>                <ColumnDefinition Width="100"/>                <ColumnDefinition Width="120"/>                <ColumnDefinition Width="Auto"/>                <ColumnDefinition Width="Auto"/>                <ColumnDefinition Width="100"/>            <ColumnDefinition Width="Auto"/>        </Grid.ColumnDefinitions>
+    <Grid TextBlock.FontSize="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
 
         <Button x:Name="connect" Width="90" Height="35" Content="Connect"  Click="connect_Click" 

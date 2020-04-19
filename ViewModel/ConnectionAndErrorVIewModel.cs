@@ -69,11 +69,6 @@ namespace FlightSimulatorApp.ViewModel
             {
                 this.model.Error = null;
             }
-            //get
-            //{
-            //    errorWindowEmptyFlag = false;
-            //    return flightSimulatorModel.Err;
-            //}
         }
 
         public string VM_HasError
@@ -82,6 +77,10 @@ namespace FlightSimulatorApp.ViewModel
             {
                 return model.HasError;
 
+            }
+            set
+            {
+                this.model.HasError = "";
             }
         }
 

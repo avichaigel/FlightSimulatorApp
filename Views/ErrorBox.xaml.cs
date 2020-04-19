@@ -33,6 +33,7 @@ namespace FlightSimulatorApp.Views
         {
             errorText.Text = "";
             cevm.VM_ErrorClear = null;
+            cevm.VM_HasError = "";
         }
 
         private void close_Click(object sender, RoutedEventArgs e)
