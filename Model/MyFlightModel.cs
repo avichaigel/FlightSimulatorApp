@@ -237,7 +237,7 @@ namespace FlightSimulatorApp.Model
             {
                 Error = "ERROR: Timeout - server has not responded for 10 seconds";
                 mutex.ReleaseMutex();
-                if (Double.TryParse(read, out double n))
+                if (Double.TryParse(read, out _))
                 {
                     return read;
                 }
