@@ -22,7 +22,7 @@
             <!--Map-->
             <myViews:Map x:Name="myMapControl" Height="530" Width="400" Grid.Row="1" Grid.RowSpan="2" Margin="10 0 0 0"/>
             <!--Connection box-->
-            <Button x:Name="connect" Width="90" Height="35" Content="Connect" Margin="10,0,0,0" Click="connect_Click" 
+            <Button x:Name="connect" Width="70" Height="35" Content="Connect" Margin="10,0,0,0" Click="connect_Click" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -30,9 +30,9 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="Disconnect" Command="{Binding VM_Disconnect}" Width="90" Height="35" Content="Disconnect" 
+            <Button x:Name="Disconnect" Command="{Binding VM_Disconnect}" Width="70" Height="35" Content="Disconnect" 
                     Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                    Margin="220,0,0,0" Click="disconnect_Click">
+                    Margin="190,0,0,0" Click="disconnect_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="IsEnabled" Value="True" />
@@ -42,6 +42,7 @@
 
 
             <!--Error Box-->
+            <!--<TextBlock x:Name="errorText" Foreground="Red" FontSize="14" HorizontalAlignment="Center" Text="Errors? ->" Margin="262 10 0 0"/>-->
             <Button x:Name="Error" Width="25" Height="30" Margin="385,5,0, 0"
                          HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Click="Error_Click" Grid.Row="0">
                 <Button.Content>
@@ -50,25 +51,17 @@
                             <Style TargetType="{x:Type Rectangle}" >
                                 <Setter Property="Fill">
                                     <Setter.Value>
-                                        <ImageBrush ImageSource="QM_Silver.png" />
+                                        <ImageBrush ImageSource="QM_Orange.png" />
                                     </Setter.Value>
                                 </Setter>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VM_HasError, Mode=OneWayToSource}" Value="true" >
-                                        <DataTrigger.Setters>
-                                            <Setter Property="Fill">
-                                                <Setter.Value>
-                                                    <ImageBrush ImageSource="QM_Orange.png"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger.Setters>
-                                    </DataTrigger>
-                                </Style.Triggers>
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
                 </Button.Content>
             </Button>
+            <!--<TextBlock x:Name="errorText" Text="{Binding Path = VM_Error, Mode=OneWay,-->
+                <!--UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="10 10 0 0" Foreground ="Red" />-->
+            <!--<TextBox Name="exceptionsText" Text="{Binding VM_Error, Mode=OneWay}" Background="WhiteSmoke" Canvas.Left="0" Canvas.Top="42" Height="40" Width="150"/>-->
 
 
 
