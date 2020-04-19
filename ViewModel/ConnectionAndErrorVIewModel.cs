@@ -12,7 +12,6 @@ namespace FlightSimulatorApp.ViewModel
     {
         private IFlightModel model;
         private string ip, port;
-        private bool errorWindowEmptyFlag = true;
         public ConnectionAndErrorVIewModel(IFlightModel model)
         {
             this.model = model;
@@ -78,17 +77,17 @@ namespace FlightSimulatorApp.ViewModel
             }
         }*/
 
-        public bool VM_isErrorWindowEmpty
+        public bool VM_HasError
         {
             get
             {
                 if (this.model.Error != null)
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
 
             }

@@ -19,6 +19,7 @@ namespace FlightSimulatorApp.Views
     public partial class MainWindow : Window
     {
         private ConnectionBox cb;
+        private ErrorBox eb;
         public MainWindow()
         {
             InitializeComponent();
@@ -30,16 +31,12 @@ namespace FlightSimulatorApp.Views
                 myConnection = (Application.Current as App).connectNErrorVM,
             };
             cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
+            eb = new ErrorBox((Application.Current as App).connectNErrorVM);
         }
 
         private void connect_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            if (!cb.IsLoaded)
-            {
-                cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
-                cb.Show();
-            }*/
+            
             if (!cb.IsLoaded)
             {
                 cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
@@ -58,6 +55,11 @@ namespace FlightSimulatorApp.Views
         private void Error_Click(object sender, RoutedEventArgs e)
         {
             
+            if (!eb.IsLoaded)
+            {
+                eb = new ErrorBox((Application.Current as App).connectNErrorVM);
+                eb.Show();
+            }
         }
     }
 }
