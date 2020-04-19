@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightSimulatorApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -53,6 +54,7 @@ namespace FlightSimulatorApp.Model
                 errorMsg = value;
                 NotifyPropertyChanged("Error");
                 NotifyPropertyChanged("HasError");
+
             }
         }
         public double Throttle
@@ -236,18 +238,18 @@ namespace FlightSimulatorApp.Model
             if (sw.ElapsedMilliseconds > 10000)
             {
                 Error = "ERROR: Timeout - server has not responded for 10 seconds";
-                mutex.ReleaseMutex();
-                if (Double.TryParse(read, out _))
-                {
-                    return read;
-                }
-                else
-                {
-                    return currentValue.ToString();
-                }
             }
-            mutex.ReleaseMutex();
-            return read;
+            if (Double.TryParse(read, out _))
+            {
+                mutex.ReleaseMutex();
+                return read;
+            }
+            else
+            {
+                Error = "ERROR: Received value is not a double";
+                mutex.ReleaseMutex();
+                return currentValue.ToString();
+            }
         }
 
         //get values for properties from simulator
