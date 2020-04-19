@@ -152,9 +152,5 @@
   <ItemGroup>
     <Resource Include="Views\plane.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\QM_Orange.png" />
-    <Resource Include="Views\QM_Silver.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

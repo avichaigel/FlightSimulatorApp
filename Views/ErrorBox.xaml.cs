@@ -20,24 +20,11 @@ namespace FlightSimulatorApp.Views
     /// </summary>
     public partial class ErrorBox : Window
     {
-        ConnectionAndErrorVIewModel cevm;
 
-        public ErrorBox(ConnectionAndErrorVIewModel vm)
+        public ErrorBox()
         {
             InitializeComponent();
-            cevm = vm;
-            DataContext = cevm;
-        }
-
-        private void ignore_Click(object sender, RoutedEventArgs e)
-        {
-            errorText.Text = "";
-            cevm.VM_ErrorClear = null;
-        }
-
-        private void close_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            DataContext = (Application.Current as App).connectNErrorVM;
         }
     }
 }

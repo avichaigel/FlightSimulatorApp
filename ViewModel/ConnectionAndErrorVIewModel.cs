@@ -26,10 +26,7 @@ namespace FlightSimulatorApp.ViewModel
 
         public void NotifyPropertyChanged(string propName)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
         public string VM_Error
@@ -69,28 +66,21 @@ namespace FlightSimulatorApp.ViewModel
             {
                 this.model.Error = null;
             }
-            //get
-            //{
-            //    errorWindowEmptyFlag = false;
-            //    return flightSimulatorModel.Err;
-            //}
+            
         }
 
         public bool VM_HasError
         {
             get
             {
-                if (this.model.Error != null)
-                {
-                    return true;
-                }
-                else
+                if (model.Error != null)
                 {
                     return false;
                 }
-
-            }
+                return true;                
+            }      
         }
+
 
         public void VM_Connect()
         {

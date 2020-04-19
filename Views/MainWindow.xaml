@@ -22,7 +22,7 @@
             <!--Map-->
             <myViews:Map x:Name="myMapControl" Height="530" Width="400" Grid.Row="1" Grid.RowSpan="2" Margin="10 0 0 0"/>
             <!--Connection box-->
-            <Button x:Name="connect" Width="90" Height="35" Content="Connect" Margin="10,0,0,0" Click="connect_Click" 
+            <Button x:Name="connect" Width="70" Height="35" Content="Connect" Margin="10,0,0,0" Click="connect_Click" 
                          HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -30,9 +30,9 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button x:Name="Disconnect" Command="{Binding VM_Disconnect}" Width="90" Height="35" Content="Disconnect" 
+            <Button x:Name="Disconnect" Command="{Binding VM_Disconnect}" Width="70" Height="35" Content="Disconnect" 
                     Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                    Margin="220,0,0,0" Click="disconnect_Click">
+                    Margin="90,0,0,0" Click="disconnect_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="IsEnabled" Value="True" />
@@ -42,33 +42,12 @@
 
 
             <!--Error Box-->
-            <Button x:Name="Error" Width="25" Height="30" Margin="385,5,0, 0"
-                         HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Click="Error_Click" Grid.Row="0">
-                <Button.Content>
-                    <Rectangle x:Name="imageSwitch" Width="20" Height="25" >
-                        <Rectangle.Style>
-                            <Style TargetType="{x:Type Rectangle}" >
-                                <Setter Property="Fill">
-                                    <Setter.Value>
-                                        <ImageBrush ImageSource="QM_Silver.png" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding VM_HasError, Mode=OneWayToSource}" Value="true" >
-                                        <DataTrigger.Setters>
-                                            <Setter Property="Fill">
-                                                <Setter.Value>
-                                                    <ImageBrush ImageSource="QM_Orange.png"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger.Setters>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-                </Button.Content>
-            </Button>
+            <TextBlock Foreground="Red" FontSize="14" HorizontalAlignment="Left" Text="Error:" Margin="170 10 0 0"/>
+            <TextBox x:Name="errorText2"  Text="{Binding Path = VM_Error, Mode=OneWay,
+                UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Margin="210, 5, 0,10" MaxHeight="40"/>
+            <TextBlock x:Name="errorText" Text="{Binding Path = VM_Error}" HorizontalAlignment="Left" Margin="205 12 10 10" Foreground ="Red" />
+             <!--<myViews:ErrorBox x:Name="myConnection" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>-->
+
 
 
 

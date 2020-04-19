@@ -52,7 +52,7 @@ namespace FlightSimulatorApp.Model
             {
                 errorMsg = value;
                 NotifyPropertyChanged("Error");
-                NotifyPropertyChanged("HasError");
+                NotifyPropertyChanged("VMHasError");
             }
         }
         public double Throttle

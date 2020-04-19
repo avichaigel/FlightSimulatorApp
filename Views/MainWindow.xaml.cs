@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightSimulatorApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace FlightSimulatorApp.Views
     public partial class MainWindow : Window
     {
         private ConnectionBox cb;
-        private ErrorBox eb;
+        //private ConnectionAndErrorVIewModel errorvm;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace FlightSimulatorApp.Views
                 myConnection = (Application.Current as App).connectNErrorVM,
             };
             cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
-            eb = new ErrorBox((Application.Current as App).connectNErrorVM);
+            //errorvm = (Application.Current as App).connectNErrorVM;
         }
 
         private void connect_Click(object sender, RoutedEventArgs e)
@@ -50,16 +51,6 @@ namespace FlightSimulatorApp.Views
             {
                 (Application.Current as App).connectNErrorVM.VM_Disconnect();
             } 
-        }
-
-        private void Error_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (!eb.IsLoaded)
-            {
-                eb = new ErrorBox((Application.Current as App).connectNErrorVM);
-                eb.Show();
-            }
         }
     }
 }
