@@ -62,20 +62,19 @@ namespace FlightSimulatorApp.ViewModel
         }
         
         
-        /*
-        public string VM_Err
+        
+        public string VM_ErrorClear
         {
             set
             {
-                flightSimulatorModel.clearError();
-                errorWindowEmptyFlag = true;
+                this.model.Error = null;
             }
-            get
-            {
-                errorWindowEmptyFlag = false;
-                return flightSimulatorModel.Err;
-            }
-        }*/
+            //get
+            //{
+            //    errorWindowEmptyFlag = false;
+            //    return flightSimulatorModel.Err;
+            //}
+        }
 
         public bool VM_HasError
         {

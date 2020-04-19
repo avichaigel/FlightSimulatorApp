@@ -32,6 +32,7 @@ namespace FlightSimulatorApp.Views
         private void ignore_Click(object sender, RoutedEventArgs e)
         {
             errorText.Text = "";
+            cevm.VM_ErrorClear = null;
         }
 
         private void close_Click(object sender, RoutedEventArgs e)
