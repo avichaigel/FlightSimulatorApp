@@ -34,32 +34,8 @@ namespace FlightSimulatorApp.Views
             eb = new ErrorBox((Application.Current as App).connectNErrorVM);
         }
 
-        private void connect_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (!cb.IsLoaded)
-            {
-                cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
-                cb.Show();
-            }
-        }
+        
 
-        private void disconnect_Click(object sender, RoutedEventArgs e)
-        {
-            if ((Application.Current as App).connectNErrorVM.VM_Status == "Connected")
-            {
-                (Application.Current as App).connectNErrorVM.VM_Disconnect();
-            } 
-        }
-
-        private void Error_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (!eb.IsLoaded)
-            {
-                eb = new ErrorBox((Application.Current as App).connectNErrorVM);
-                eb.Show();
-            }
-        }
+       
     }
 }

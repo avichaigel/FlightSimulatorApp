@@ -32,6 +32,8 @@ namespace FlightSimulatorApp.Model
         string Status { get; set; }
         string Location { get; set; }
 
+        string HasError { get; set; }
+
         //connection to the simulator
         void Connect(string ip, int port);
         void Disconnect();

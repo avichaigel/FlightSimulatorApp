@@ -76,18 +76,11 @@ namespace FlightSimulatorApp.ViewModel
             //}
         }
 
-        public bool VM_HasError
+        public string VM_HasError
         {
             get
             {
-                if (this.model.Error != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return model.HasError;
 
             }
         }

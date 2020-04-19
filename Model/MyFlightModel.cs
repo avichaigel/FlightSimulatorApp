@@ -19,6 +19,7 @@ namespace FlightSimulatorApp.Model
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
         private string errorMsg, status;
+        private string hasError = "";
         private Queue<string> controllers = new Queue<string>();
 
 
@@ -52,11 +53,22 @@ namespace FlightSimulatorApp.Model
             set
             {
                 errorMsg = value;
+                HasError = "Check Errors ->";
                 NotifyPropertyChanged("Error");
-                NotifyPropertyChanged("HasError");
 
             }
         }
+
+        public string HasError
+        {
+            get => hasError;
+            set
+            {
+                hasError = value;
+                NotifyPropertyChanged("HasError");
+            }
+        }
+
         public double Throttle
         {
             get => throttle;
