@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0">
             <TextBlock x:Name="errorText" Text="{Binding Path = VM_Error, Mode=OneWay,
-                UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="10 10 0 0"/>
+                UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="10 10 0 0" Foreground ="Red" />
         </ScrollViewer>
 
         <Button x:Name="ignore" Content="Ignore" Grid.Row="1" Width="90" Height="35"
