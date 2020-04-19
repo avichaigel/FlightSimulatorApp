@@ -27,8 +27,8 @@ namespace FlightSimulatorApp.Views
             {
                 myMapControl = (Application.Current as App).MapVM, 
                 myDashboard = (Application.Current as App).dashboardVM,
-                myControllers = (Application.Current as App).controllersVM,
                 myConnection = (Application.Current as App).connectNErrorVM,
+                myControllers = (Application.Current as App).controllersVM,
             };
             cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
             eb = new ErrorBox((Application.Current as App).connectNErrorVM);
