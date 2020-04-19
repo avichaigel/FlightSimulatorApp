@@ -7,96 +7,74 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
+using System.IO;
 
 namespace FlightSimulatorApp.Model
 {
     public class MyTelnetClient : ITelnetClient
     {
         private TcpClient client;
-        private bool IsConnected = false;
-        private bool telnetError;
+        private bool isConnected = false;
+        private static Mutex mutex = new Mutex();
+
+        public bool IsConnected { get => isConnected; set => isConnected = value; }
+
         public void Connect(string ip, int port)
         {
-            //ip = "1.0.0.127";
-            //port = 5402;
             client = new TcpClient();
-            IsConnected = true;
             try
             {
                 client.Connect(ip, port);
-                telnetError = false;
+                isConnected = true;
             }
-            catch (Exception)
+            catch
             {
-                telnetError = true;
-                //(Application.Current as App).model.Err = "Couldn't connect to server";
-                Console.WriteLine("Couldn't connect to server");
+                throw new IOException("Unable to establish connection to server");
             }
-
         }
 
         public void Disconnect()
         {
-            if (IsConnected)
+            if (isConnected)
             {
-                IsConnected = false;
+                isConnected = false;
                 client.Close();
             }
         }
 
         public string Read()
         {
-            //NetworkStream myNetworkStream = client.GetStream();
-            //if (myNetworkStream.CanRead)
-            //{
-            //    byte[] bufferReader = new byte[1024];
-            //    StringBuilder wholeMessage = new StringBuilder();
-            //    int readBytesNum = 0;
-            //    while (myNetworkStream.DataAvailable)
-            //    {
-            //        readBytesNum = myNetworkStream.Read(bufferReader, 0, bufferReader.Length);
-            //        wholeMessage.AppendFormat("{0}", Encoding.ASCII.GetString(bufferReader, 0, readBytesNum));
-            //    }
-            //    // print the message to the console
-            //    Console.WriteLine("Your Message: " + wholeMessage);
-            //    return wholeMessage.ToString();
-            //}
-            //return null;
-            byte[] buffer = new byte[1024];
-            client.GetStream().Read(buffer, 0, 1024);
-            string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-            Console.WriteLine(data);
-            return data;
-
-        }
-
-
-        public void Write(string command)
-        {
-            if (IsConnected)
+            mutex.WaitOne();
+            try
             {
-                try
-                {
-                    string official_command = command + "\n";
-                    byte[] read = Encoding.ASCII.GetBytes(official_command);
-                    client.GetStream().Write(read, 0, read.Length);
-                }
-                catch (Exception)
-                {
-                    telnetError = true;
-                    Disconnect();
-                    if (!telnetError)
-                    {
-                        //(Application.Current as App).model.Err = "Server Communication is done";
-                        Console.WriteLine("Server Communication is done");
-                    }
-                }
+                byte[] buffer = new byte[1024];
+                client.GetStream().Read(buffer, 0, 1024);
+                string data = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+                mutex.ReleaseMutex();
+                return data;
+            }
+            catch
+            {
+                mutex.ReleaseMutex();
+                throw new IOException("Server is not connected");
             }
         }
 
-        public bool GetTelnetError()
+        public void Write(string command)
         {
-            return this.telnetError;
+            mutex.WaitOne();
+            try
+            {
+                string official_command = command + "\n";
+                byte[] read = Encoding.ASCII.GetBytes(official_command);
+                client.GetStream().Write(read, 0, read.Length);
+                mutex.ReleaseMutex();
+            }
+            catch
+            {
+                mutex.ReleaseMutex();
+                throw new IOException("Server is not connected");
+            }
         }
     }
 }

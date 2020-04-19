@@ -1,6 +1,9 @@
-﻿using System;
+﻿using FlightSimulatorApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,9 +14,14 @@ namespace FlightSimulatorApp.Model
     public class MyFlightModel : IFlightModel
     {
         ITelnetClient telnetClient;
-        public volatile Boolean stop;
+        volatile Boolean stop;
+        volatile Boolean sentErrorOnce;
         public event PropertyChangedEventHandler PropertyChanged;
         private static Mutex mutex = new Mutex();
+        private string errorMsg, status;
+        private string hasError = "";
+        private Queue<string> controllers = new Queue<string>();
+
 
         private double throttle;
         private double aileron;
@@ -29,20 +37,46 @@ namespace FlightSimulatorApp.Model
         private double heading;
         private double ground_Speed;
         private double vertical_Speed;
+        private string location;
 
         //constuctor
         public MyFlightModel(ITelnetClient telnetClient)
         {
             this.telnetClient = telnetClient;
+            InitializeDashboard();
+            status = "Disconnected";
         }
         //Properties
+        public string Error
+        {
+            get => errorMsg;
+            set
+            {
+                errorMsg = value;
+                HasError = "Check Errors ->";
+                NotifyPropertyChanged("Error");
+
+            }
+        }
+
+        public string HasError
+        {
+            get => hasError;
+            set
+            {
+                hasError = value;
+                NotifyPropertyChanged("HasError");
+            }
+        }
+
         public double Throttle
         {
             get => throttle;
             set
             {
                 throttle = value;
-                this.Write("set /controls/engines/current-engine/throttle " + value);
+                //controllers.Enqueue("set /controls/engines/current-engine/throttle " + value);
+                telnetClient.Write("set /controls/engines/current-engine/throttle " + value);
             }
         }
         public double Aileron
@@ -51,7 +85,8 @@ namespace FlightSimulatorApp.Model
             set
             {
                 aileron = value;
-                this.Write("set /controls/flight/aileron " + value);
+                //controllers.Enqueue("set /controls/flight/aileron " + value);
+                telnetClient.Write("set /controls/flight/aileron " + value);
             }
         }
         public double Elevator
@@ -60,7 +95,8 @@ namespace FlightSimulatorApp.Model
             set
             {
                 elevator = value;
-                this.Write("set /controls/flight/elevator " + value);
+                //controllers.Enqueue("set /controls/flight/elevator " + value);
+                telnetClient.Write("set /controls/flight/elevator " + value);
             }
         }
         public double Rudder
@@ -69,7 +105,8 @@ namespace FlightSimulatorApp.Model
             set
             {
                 rudder = value;
-                this.Write("set /controls/flight/rudder " + value);
+                //controllers.Enqueue("set /controls/flight/rudder " + value);
+                telnetClient.Write("set /controls/flight/rudder " + value);
             }
         }
         public double Latitude {
@@ -77,6 +114,15 @@ namespace FlightSimulatorApp.Model
             set
             {
                 latitude = value;
+                //North and South pole + earth coordinates issue fix
+                if (value > 85)
+                {
+                    latitude = 84;
+                }
+                if (value < -85)
+                {
+                    latitude = -84;
+                }
                 NotifyPropertyChanged("Latitude");
             }
         }
@@ -84,6 +130,15 @@ namespace FlightSimulatorApp.Model
             get => longtitude; 
             set {
                 longtitude = value;
+                //North and South pole + earth coordinates issue fix
+                if (value > 180)
+                {
+                    longtitude = 179;
+                }
+                if (value < -180)
+                {
+                    longtitude = -179;
+                }
                 NotifyPropertyChanged("Longtitude");
             }
         }
@@ -144,14 +199,35 @@ namespace FlightSimulatorApp.Model
             }
         }
 
+        public string Location
+        {
+            get => location;
+            set
+            {
+                location = value;
+                NotifyPropertyChanged("Location");
+            }
+        }
+
         //methods
         public void Connect(string ip, int port)
         {
-            telnetClient.Connect(ip, port);
+            try
+            {
+                stop = false;
+                Status = "Connected";
+                telnetClient.Connect(ip, port);
+                this.Start();
+            }
+            catch (IOException e)
+            {
+                Error = "ERROR: " + e.Message;
+            }
         }
 
         public void Disconnect()
         {
+            Status = "Disconnected";
             stop = true;
             telnetClient.Disconnect();
         }
@@ -164,37 +240,28 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public void Write(string message)
+        public string Read(double currentValue)
         {
-            telnetClient.Write(message);
-            //TODO undo commenting out
+            mutex.WaitOne();
 
-/*            var task = Task.Run(() => telnetClient.Write(message));
-            if (!task.Wait(TimeSpan.FromSeconds(10)))
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var read = telnetClient.Read();
+            if (sw.ElapsedMilliseconds > 10000)
             {
-                //throw new Exception("Server not responding for 10 seconds");
-                Console.Write("Server not responding for 10 seconds");
-                //TODO instead of printing, send this message to View
-            }*/
-        }
-
-        public string Read()
-        {
-            return telnetClient.Read();
-            //TODO undo commenting out
-
-/*            var task = Task.Run(() => telnetClient.Read());
-            if (task.Wait(TimeSpan.FromSeconds(10)))
+                Error = "ERROR: Timeout - server has not responded for 10 seconds";
+            }
+            if (Double.TryParse(read, out _))
             {
-                return task.Result;
+                mutex.ReleaseMutex();
+                return read;
             }
             else
             {
-                //throw new Exception("Server not responding for 10 seconds");
-                Console.Write("Server not responding for 10 seconds");
-                return "Server not responding for 10 seconds";
-                //TODO instead of printing, send this message to View
-            }*/
+                Error = "ERROR: Received value is not a double";
+                mutex.ReleaseMutex();
+                return currentValue.ToString();
+            }
         }
 
         //get values for properties from simulator
@@ -205,36 +272,86 @@ namespace FlightSimulatorApp.Model
                 while(!stop)
                 {
                     mutex.WaitOne();
-                    this.Write("get /position/latitude-deg");
-                    Latitude = Double.Parse(this.Read());
-                    this.Write("get /position/longitude-deg");
-                    Longtitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-                    Air_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-altitude-ft");
-                    Altitude = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
-                    Roll = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-                    Pitch = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/altimeter/indicated-altitude-ft");
-                    Altimeter = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
-                    Heading = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-ground-speed-kt");
-                    Ground_Speed = Double.Parse(this.Read());
-                    this.Write("get /instrumentation/gps/indicated-vertical-speed");
-                    Vertical_Speed = Double.Parse(this.Read());
+                    try
+                    {
+                        telnetClient.Write("get /position/latitude-deg");
+                        Latitude = Double.Parse(this.Read(latitude));
+                        telnetClient.Write("get /position/longitude-deg");
+                        Longtitude = Double.Parse(this.Read(longtitude));
+                        telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
+                        Air_Speed = Double.Parse(this.Read(air_Speed));
+                        telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft");
+                        Altitude = Double.Parse(this.Read(altitude));
+                        telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg");
+                        Roll = Double.Parse(this.Read(roll));
+                        telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg");
+                        Pitch = Double.Parse(this.Read(pitch));
+                        telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft");
+                        Altimeter = Double.Parse(this.Read(altimeter));
+                        telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg");
+                        Heading = Double.Parse(this.Read(heading));
+                        telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt");
+                        Ground_Speed = Double.Parse(this.Read(ground_Speed));
+                        telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed");
+                        Vertical_Speed = Double.Parse(this.Read(vertical_Speed));
+                        Location = latitude.ToString() + "," + longtitude.ToString();
 
-                    Thread.Sleep(250);
+                        Thread.Sleep(250);
+                    }
+                    catch (IOException e)
+                    {
+                        this.telnetClient.IsConnected = false;
+                        Error = "ERROR: " + e.Message;
+                    }
                     mutex.ReleaseMutex();
-                }               
+                }
             }).Start();
         }
 
         void IFlightModel.NotifyPropertyChanged(string propName)
         {
             throw new NotImplementedException();
+        }
+
+        public void InitializeDashboard()
+        {
+            // Initialize all the properties to 0.s.
+            Air_Speed = 0;
+            Altitude = 0;
+            Roll = 0;
+            Pitch = 0;
+            Altimeter = 0;
+            Heading = 0;
+            Ground_Speed = 0;
+            Vertical_Speed = 0;
+            // Reading map values from the simulator.
+            Latitude = 0;
+            Longtitude = 0;
+            //Location = latitude + "," + longtitude;
+        }
+
+        public void StartWriting(string command)
+        {
+            if (this.telnetClient.IsConnected)
+            {
+                this.telnetClient.Write(command);
+                this.telnetClient.Read();
+            }
+            else if (!sentErrorOnce)
+            {
+                sentErrorOnce = true;
+                Error = "Server is not connected";
+            }
+        }
+
+        public string Status
+        {
+            get { return status; }
+            set
+            {
+                status = value;
+                NotifyPropertyChanged("Status");
+            }
         }
     }
 }

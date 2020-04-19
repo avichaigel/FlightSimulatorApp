@@ -8,7 +8,7 @@ using FlightSimulatorApp.Model;
 
 namespace FlightSimulatorApp.ViewModel
 {
-    class MapViewModel : INotifyPropertyChanged
+    public class MapViewModel : INotifyPropertyChanged
     {
         private IFlightModel model;
         public MapViewModel(IFlightModel model)
@@ -35,6 +35,11 @@ namespace FlightSimulatorApp.ViewModel
         public double VM_Longtitude
         {
             get => model.Longtitude;
+        }
+
+        public string VM_Location
+        {
+            get => model.Location;
         }
     }
 }

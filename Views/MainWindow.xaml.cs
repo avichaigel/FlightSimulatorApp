@@ -18,10 +18,24 @@ namespace FlightSimulatorApp.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ConnectionBox cb;
+        private ErrorBox eb;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = (Application.Current as App).MainVM1;
+            DataContext = new
+            {
+                myMapControl = (Application.Current as App).MapVM, 
+                myDashboard = (Application.Current as App).dashboardVM,
+                myConnection = (Application.Current as App).connectNErrorVM,
+                myControllers = (Application.Current as App).controllersVM,
+            };
+            cb = new ConnectionBox((Application.Current as App).connectNErrorVM);
+            eb = new ErrorBox((Application.Current as App).connectNErrorVM);
         }
+
+        
+
+       
     }
 }

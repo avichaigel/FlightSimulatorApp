@@ -31,6 +31,7 @@ namespace FlightSimulatorApp.Views
             InitializeComponent();
             _latitude = 0; _longtitude = 0; newLat = 0; newLong = 0;
             latDelta = 0; longDelta = 0; deg = 0; newDeg = 0;
+            DataContext = (Application.Current as App).MapVM;
         }
 
         private void PlaneRotate()
@@ -49,18 +50,18 @@ namespace FlightSimulatorApp.Views
 
         private void latitude_TargetUpdated(object sender, DataTransferEventArgs e)
         {
-            //newLat = Double.Parse(latitude.Text);
-            //latDelta = newLat - _latitude;
-            //_latitude = newLat;
+            newLat = Double.Parse(latitude.Text);
+            latDelta = newLat - _latitude;
+            _latitude = newLat;
             PlaneRotate();
         }
 
         private void longitude_TargetUpdated(object sender, DataTransferEventArgs e)
         {
             // the longtitude from the map and not the local one!
-            //newLong = Double.Parse(longitude.Text);
-            //longDelta = newLong - _longtitude;
-            //_longtitude = newLong;
+            newLong = Double.Parse(longtitude.Text);
+            longDelta = newLong - _longtitude;
+            _longtitude = newLong;
             PlaneRotate();
         }
     }

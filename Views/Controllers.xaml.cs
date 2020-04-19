@@ -26,6 +26,7 @@ namespace FlightSimulatorApp.Views
             Joystick.MoveEvent += NormalizeValues;
             RudderValue.Text = "0";
             ElevatorValue.Text = "0";
+            DataContext = (Application.Current as App).controllersVM;
         }
 
         private void NormalizeValues(double x, double y)

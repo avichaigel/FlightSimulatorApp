@@ -6,6 +6,8 @@ namespace FlightSimulatorApp.Model
 {
 	public interface ITelnetClient
 	{
+		bool IsConnected { get; set; }
+
 		void Connect(string ip, int port);
 		void Disconnect();
 		void Write(string command);
